@@ -243,6 +243,24 @@ void Matrix44::translateGlobal(float x, float y, float z)
 	*this = *this * T;
 }
 
+// It applies a translation but maintaining the point where the front vector was pointing to
+void Matrix44::translateGlobalWithConstantTarget(float x, float y, float z)
+{	
+	// Get the position where the front vector is pointing
+	//Vector3 target = getTranslation() + frontVector();
+	//std::cout << "(" << target[0] << ", " << target[1] << ", " << target[2] << ")\n";
+
+	// Apply the translation
+	translateGlobal(x, y, z);
+
+	// Compute the new front vector to maintain the target. That is, applying the opposite change of the translation
+	Vector3 fv = frontVector() + Vector3(-x, 0.0f, -z);
+
+	// Set the new front vector
+	setFrontAndOrthonormalize(fv);
+
+}
+
 void Matrix44::rotateGlobal( float angle_in_rad, const Vector3& axis )
 {
 	Matrix44 R;

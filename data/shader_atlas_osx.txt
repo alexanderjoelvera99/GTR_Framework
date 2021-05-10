@@ -1,6 +1,9 @@
 //example of some shaders compiled
 flat basic.vs flat.fs
 texture basic.vs texture.fs
+phong_equation basic.vs phong.fs
+light basic.vs light.fs
+singlepass basic.vs singlepass.fs
 
 \basic.vs
 
@@ -61,7 +64,7 @@ varying vec2 v_uv;
 varying vec4 v_color;
 
 uniform vec4 u_color;
-uniform sampler2D u_texture;
+uniform sampler2D u_color_texture;
 uniform float u_time;
 uniform float u_alpha_cutoff;
 
@@ -69,7 +72,7 @@ void main()
 {
 	vec2 uv = v_uv;
 	vec4 color = u_color;
-	color *= texture2D( u_texture, uv );
+	color *= texture2D( u_color_texture, uv );
 
 	if(color.a < u_alpha_cutoff)
 		discard;
@@ -170,4 +173,342 @@ void main()
 
 	//calcule the position of the vertex using the matrices
 	gl_Position = u_viewprojection * vec4( v_world_position, 1.0 );
+}
+
+\phong.fs
+varying vec3 v_position;
+varying vec3 v_world_position;
+varying vec3 v_normal;
+varying vec2 v_uv;
+varying vec4 v_color;
+
+uniform vec4 u_color;
+uniform sampler2D u_texture;
+uniform float u_time;
+uniform float u_alpha_cutoff;
+
+void main()
+{
+	vec2 uv = v_uv;
+	vec4 color = u_color;
+	color *= texture2D( u_texture, uv );
+
+	if(color.a < u_alpha_cutoff)
+		discard;
+
+	gl_FragColor = color;
+}
+
+\light.fs
+
+varying vec3 v_position; // position in local coordinates
+varying vec3 v_world_position; // position in world coordinates
+varying vec3 v_normal; 
+varying vec2 v_uv;
+varying vec4 v_color;
+
+uniform vec3 u_camera_pos;
+uniform vec4 u_color;
+uniform sampler2D u_color_texture;
+uniform vec3 u_emissive_factor;
+uniform sampler2D u_emissive_texture;
+uniform sampler2D u_metallic_roughness_texture;
+uniform sampler2D u_normal_texture;
+uniform sampler2D u_occlusion_texture;
+uniform float u_time;
+uniform float u_alpha_cutoff;
+uniform vec3 u_ambient_light;
+uniform bool u_has_emissive_light; // has emissive light
+uniform vec3 u_light_position; //position of the light
+uniform vec3 u_light_color; //color of the light
+uniform vec3 u_light_direction; //this is direction where a spot light points 
+uniform int u_light_type; // this is the light type: DIRECTIONAL=0, POINT=1, SPOT=2
+uniform float u_max_distance; // max light distance
+uniform float u_cone_angle; // max cone angle of a spot light
+
+vec3 light = vec3(0.0);
+
+void main()
+{
+	vec2 uv = v_uv;
+	vec4 color = u_color;
+	color *= texture2D( u_color_texture, uv );
+
+	// add ambient_light
+	vec4 occlusion_texture = texture2D(u_occlusion_texture, uv);
+	occlusion_texture.x *= texture2D(u_metallic_roughness_texture, uv).x;
+	light += u_ambient_light * vec3(occlusion_texture.x);
+
+	//very important to normalize as they come
+	//interpolated so normalization is lost
+	vec3 N = normalize( v_normal );
+
+	// Directional light
+	if(u_light_type == 0){
+
+		//if the light is a directional light the light
+		//vector is the same for all pixels
+		//we assume the vector is normalized
+		vec3 L = normalize(u_light_direction);
+
+		//compute how much is aligned
+		float NdotL = dot(N,L);
+
+		//light cannot be negative (but the dot product can)
+		NdotL = clamp( NdotL, 0.0, 1.0 );
+
+		// Distance from the light to the object
+		float light_to_point_distance = distance(u_light_position, v_world_position);
+
+		// Compute attenuation factor 
+		float att_factor = u_max_distance - light_to_point_distance;
+
+		// Normalizing attenuation factor
+		att_factor /= u_max_distance;
+
+		// Ignoring negative values
+		att_factor = max(att_factor, 0.0);
+
+		// Adding the diffuse light
+		light += (NdotL * u_light_color) * att_factor;	
+	}
+
+	//Point light
+	if(u_light_type == 1){
+		// Get the light vector for each pixel
+		vec3 L = u_light_position - v_world_position;
+
+		L = normalize(L);
+
+		// Compute the dot product btw N and L
+		float NdotL = dot(N,L);
+
+		// clamping the NdotL since light can't be negative
+		NdotL = clamp(NdotL, 0.0, 1.0);
+
+		// Distance from the light to the object
+		float light_to_point_distance = distance(u_light_position, v_world_position);
+
+		if(light_to_point_distance < u_max_distance){
+			// Compute attenuation factor 
+			float att_factor = u_max_distance - light_to_point_distance;
+
+			// Normalizing attenuation factor
+			att_factor /= u_max_distance;
+
+			// Ignoring negative values
+			att_factor = max(att_factor, 0.0);
+
+			// Adding the diffuse light
+			light += (NdotL * u_light_color) * att_factor;	
+		}
+	}
+	//Spot light 
+	else if(u_light_type == 2){
+		// Get the inverse light vector for each pixel
+		vec3 negative_L = v_world_position - u_light_position;
+
+		negative_L = normalize(negative_L);
+		
+		// Spot direction
+		vec3 spot_direction = normalize(u_light_direction);
+
+		// Compute the dot product btw spot_direction and -L
+		float spotDirectionDotNegativeL = dot(spot_direction,negative_L);
+
+		//computing the angle between spot_direction and -L
+		float angle_spotDirection_negativeL = acos(spotDirectionDotNegativeL);
+
+		// clamping the NdotL since light can't be negative
+		spotDirectionDotNegativeL = clamp(spotDirectionDotNegativeL, 0.0, 1.0);
+
+		// Distance from the light to the object
+		float light_to_point_distance = distance(u_light_position, v_world_position);
+
+		if(light_to_point_distance <= u_max_distance && angle_spotDirection_negativeL <= u_cone_angle){
+			// Compute attenuation factor 
+			float att_factor = u_max_distance - light_to_point_distance;
+
+			// Normalizing attenuation factor
+			att_factor /= u_max_distance;
+
+			// Ignoring negative values
+			att_factor = max(att_factor, 0.0);
+
+			// Adding the diffuse light
+			light += ( spotDirectionDotNegativeL * u_light_color) * att_factor;
+		}
+	}
+	
+	color.xyz *= light;
+
+	//adding emissive_texture
+	if(u_has_emissive_light == true){
+		color += texture2D( u_emissive_texture, uv ) * vec4(u_emissive_factor, 1);
+	}
+	
+	if(color.a < u_alpha_cutoff)
+		discard;
+
+	gl_FragColor = color;
+}
+
+\singlepass.fs
+
+varying vec3 v_position; // position in local coordinates
+varying vec3 v_world_position; // position in world coordinates
+varying vec3 v_normal; 
+varying vec2 v_uv;
+varying vec4 v_color;
+
+uniform vec3 u_camera_pos;
+uniform vec4 u_color;
+uniform sampler2D u_color_texture;
+uniform vec3 u_emissive_factor;
+uniform sampler2D u_emissive_texture;
+uniform sampler2D u_metallic_roughness_texture;
+uniform sampler2D u_occlusion_texture;
+uniform float u_alpha_cutoff;
+uniform vec3 u_ambient_light;
+uniform bool u_has_emissive_light; // has emissive light
+
+// Variables to support multiple lights in Single pass mode
+const int MAX_LIGHTS = 5;
+uniform vec3 u_light_position[MAX_LIGHTS];
+uniform vec3 u_light_color[MAX_LIGHTS];
+uniform int u_light_type[MAX_LIGHTS]; // this is the light type: DIRECTIONAL=0, POINT=1, SPOT=2
+uniform vec3 u_light_direction[MAX_LIGHTS]; //this is direction where a spot light points 
+uniform float u_max_distance[MAX_LIGHTS]; // max light distance
+uniform float u_cone_angle[MAX_LIGHTS]; // max cone angle of a spot light
+uniform int u_num_lights;
+
+vec3 light = vec3(0.0);
+
+void main()
+{
+	vec2 uv = v_uv;
+	vec4 color = u_color;
+	color *= texture2D( u_color_texture, uv );
+
+	// add ambient_light
+	vec4 occlusion_texture = texture2D(u_occlusion_texture, uv);
+	occlusion_texture.x *= texture2D(u_metallic_roughness_texture, uv).x;
+	light += u_ambient_light * vec3(occlusion_texture.x);
+	
+	// Get the normal vector for each pixel
+	vec3 N = normalize(v_normal);
+
+	//in my main...
+	for( int i = 0; i < MAX_LIGHTS; ++i )
+	{
+		if(i < u_num_lights)
+		{
+			// Directional light
+			if(u_light_type[i] == 0){
+				//if the light is a directional light the light
+				//vector is the same for all pixels
+				//we assume the vector is normalized
+				vec3 L = normalize(u_light_direction[i]);
+
+				//compute how much is aligned
+				float NdotL = dot(N,L);
+
+				//light cannot be negative (but the dot product can)
+				NdotL = clamp( NdotL, 0.0, 1.0 );
+
+				// Distance from the light to the object
+				float light_to_point_distance = distance(u_light_position[i], v_world_position);
+
+				// Compute attenuation factor 
+				float att_factor = u_max_distance[i] - light_to_point_distance;
+
+				// Normalizing attenuation factor
+				att_factor /= u_max_distance[i];
+
+				// Ignoring negative values
+				att_factor = max(att_factor, 0.0);
+
+				// Adding the diffuse light
+				light += (NdotL * u_light_color[i]) * att_factor;	
+			}
+
+			//Point light
+			if(u_light_type[i] == 1){
+				// Get the light vector for each pixel
+				vec3 L = u_light_position[i] - v_world_position;
+
+				L = normalize(L);
+
+				// Compute the dot product btw N and L
+				float NdotL = dot(N,L);
+
+				// clamping the NdotL since light can't be negative
+				NdotL = clamp(NdotL, 0.0, 1.0);
+
+				// Distance from the light to the object
+				float light_to_point_distance = distance(u_light_position[i], v_world_position);
+
+				if(light_to_point_distance < u_max_distance[i]){
+					// Compute attenuation factor 
+					float att_factor = u_max_distance[i] - light_to_point_distance;
+
+					// Normalizing attenuation factor
+					att_factor /= u_max_distance[i];
+
+					// Ignoring negative values
+					att_factor = max(att_factor, 0.0);
+
+					// Adding the diffuse light
+					light += (NdotL * u_light_color[i]) * att_factor;	
+				}
+			}
+			//Spot light 
+			else if(u_light_type[i] == 2){
+				// Get the inverse light vector for each pixel
+				vec3 negative_L = v_world_position - u_light_position[i];
+
+				negative_L = normalize(negative_L);
+				
+				// Spot direction
+				vec3 spot_direction = normalize(u_light_direction[i]);
+
+				// Compute the dot product btw spot_direction and -L
+				float spotDirectionDotNegativeL = dot(spot_direction,negative_L);
+
+				//computing the angle between spot_direction and -L
+				float angle_spotDirection_negativeL = acos(spotDirectionDotNegativeL);
+
+				// clamping the NdotL since light can't be negative
+				spotDirectionDotNegativeL = clamp(spotDirectionDotNegativeL, 0.0, 1.0);
+
+				// Distance from the light to the object
+				float light_to_point_distance = distance(u_light_position[i], v_world_position);
+
+				if(light_to_point_distance <= u_max_distance[i] && angle_spotDirection_negativeL <= u_cone_angle[i]){
+					// Compute attenuation factor 
+					float att_factor = u_max_distance[i] - light_to_point_distance;
+
+					// Normalizing attenuation factor
+					att_factor /= u_max_distance[i];
+
+					// Ignoring negative values
+					att_factor = max(att_factor, 0.0);
+
+					// Adding the diffuse light
+					light += ( spotDirectionDotNegativeL * u_light_color[i]) * att_factor;
+				}
+			}
+		}
+	}
+	color.xyz *= light;
+
+	//adding emissive_texture
+	if(u_has_emissive_light == true){
+		color += texture2D( u_emissive_texture, uv ) * vec4(u_emissive_factor, 1);
+	}
+
+	if(color.a < u_alpha_cutoff)
+		discard;
+
+	gl_FragColor = color;
 }

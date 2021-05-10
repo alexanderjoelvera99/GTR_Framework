@@ -2,7 +2,9 @@
 #define SCENE_H
 
 #include "framework.h"
+#include "shader.h"
 #include <string>
+#include "camera.h"
 
 //forward declaration
 class cJSON; 
@@ -21,6 +23,13 @@ namespace GTR {
 		REFLECTION_PROBE = 4,
 		DECALL = 5
 	};
+
+	enum eLightType{
+			DIRECTIONAL = 0,
+			POINT=1,
+			SPOT=2,
+			
+		};
 
 	class Scene;
 	class Prefab;
@@ -52,6 +61,35 @@ namespace GTR {
 		virtual void configure(cJSON* json);
 	};
 
+	//represents one light in the scene
+	class LightEntity : public GTR::BaseEntity
+	{
+	public:
+		static LightEntity* instance;
+		//Atributes
+		//...to define ...
+		Vector3 color;
+		float intensity;
+		eLightType light_type;
+		Vector3 target;
+		float max_distance;
+		float cone_angle;
+		float area_size;
+		Camera* camera; // For shadow maps
+		
+		//Constructor
+		LightEntity();
+		//Destructor
+		~LightEntity();
+
+		//Methods
+		void changeLightColor(Vector3 delta);
+		void changeLightPosition(Vector3 delta);
+		void configure(cJSON* json);
+		void setUniforms(Shader* shader);
+		void setCameraAsLight();
+	};
+
 	//contains all entities of the scene
 	class Scene
 	{
@@ -65,12 +103,14 @@ namespace GTR {
 
 		std::string filename;
 		std::vector<BaseEntity*> entities;
+		std::vector<LightEntity*> light_entities;
 
 		void clear();
 		void addEntity(BaseEntity* entity);
 
 		bool load(const char* filename);
 		BaseEntity* createEntity(std::string type);
+		void changeAmbientLightColor(Vector3 delta);
 	};
 
 };

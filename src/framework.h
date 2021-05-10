@@ -244,6 +244,7 @@ class Matrix44
 
 		//transform using global coordinates
 		void translateGlobal(float x, float y, float z);
+		void translateGlobalWithConstantTarget(float x, float y, float z);
 		void rotateGlobal( float angle_in_rad, const Vector3& axis  );
 
 		//create a transformation matrix from scratch

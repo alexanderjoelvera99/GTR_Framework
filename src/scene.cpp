@@ -24,7 +24,11 @@ void GTR::Scene::clear()
 
 void GTR::Scene::addEntity(BaseEntity* entity)
 {
-	entities.push_back(entity); entity->scene = this;
+    if(entity->entity_type == LIGHT)
+        light_entities.push_back((LightEntity*)entity);
+    else
+        entities.push_back(entity);
+    entity->scene = this;
 }
 
 bool GTR::Scene::load(const char* filename)
@@ -116,6 +120,9 @@ GTR::BaseEntity* GTR::Scene::createEntity(std::string type)
 {
 	if (type == "PREFAB")
 		return new GTR::PrefabEntity();
+    else if(type == "LIGHT"){
+        return new GTR::LightEntity();
+    }
     return NULL;
 }
 
@@ -161,3 +168,93 @@ void GTR::PrefabEntity::renderInMenu()
 #endif
 }
 
+GTR::LightEntity::LightEntity() : GTR::BaseEntity(){
+	entity_type = LIGHT;
+	// Default light type
+	light_type = DIRECTIONAL;
+	this->camera = new Camera();
+}
+
+GTR::LightEntity::~LightEntity(){}
+
+// To change the light of the color
+void GTR::LightEntity::changeLightColor(Vector3 delta){
+	color += delta;
+	color.setMax(Vector3(0.0f, 0.0f, 0.0f));
+	color.setMin(Vector3(1.0f, 1.0f, 1.0f));
+}
+
+void GTR::LightEntity::changeLightPosition(Vector3 delta){
+	this->model.translateGlobal(delta[0], delta[1], delta[2]);
+	setCameraAsLight();
+}
+
+void GTR::LightEntity::setUniforms(Shader* shader){
+	shader->setUniform("u_light_color", this->color);
+    Vector3 light_pos = this->model.getTranslation();
+	shader->setUniform("u_light_position",this->model.getTranslation());
+	shader->setUniform("u_light_type",this->light_type);
+	Vector3 front_vector = this->model.frontVector();
+	shader->setUniform("u_light_direction",this->model.frontVector());
+	shader->setUniform("u_max_distance",this->max_distance);
+	shader->setUniform("u_cone_angle",this->cone_angle);
+
+}
+
+// Configuring especial json fields for Light entity
+void GTR::LightEntity::configure(cJSON* json)
+{
+	if (cJSON_GetObjectItem(json, "light_color"))
+	{
+		Vector3 light_color = readJSONVector3(json, "light_color", Vector3(0, 0, 0));
+		this->color = light_color;
+	}
+	if (cJSON_GetObjectItem(json, "intensity"))
+	{
+		float intensity = readJSONNumber(json, "intensity", 0.0f);
+		this->intensity = intensity;
+	}
+	if (cJSON_GetObjectItem(json, "light_type"))
+	{
+		std::string light_type_str = cJSON_GetObjectItem(json, "light_type")->valuestring;
+		
+		if(light_type_str.compare("POINT") == 0){
+			this->light_type = POINT;
+		}
+		else if (light_type_str.compare("SPOT") == 0){
+			this->light_type = SPOT;
+		}
+        else if (light_type_str.compare("DIRECTIONAL") == 0){
+            this->light_type = DIRECTIONAL;
+        }
+        else {
+            std::cout << "ERROR: Light type " << light_type_str << " not supported " << std::endl;
+        }
+	}
+
+	if (cJSON_GetObjectItem(json, "target"))
+		{
+			Vector3 target = readJSONVector3(json, "target", Vector3(0,0,0));
+            Vector3 light_position = this->model.getTranslation();
+            Vector3 front_vector = target - light_position;
+			this->model.setFrontAndOrthonormalize(front_vector);
+		}
+
+	if (cJSON_GetObjectItem(json, "max_distance"))
+	{
+		float max_distance = readJSONNumber(json, "max_distance", 0.0f);
+		this->max_distance = max_distance;
+	}
+	if (cJSON_GetObjectItem(json, "cone_angle"))
+	{
+		float cone_angle = readJSONNumber(json, "cone_angle", 0.0f);
+		this->cone_angle = cone_angle*PI/(180.0f);
+	}
+
+	// Set the camera look at
+	setCameraAsLight();
+}
+
+void GTR::LightEntity::setCameraAsLight(){
+	camera->lookAt(this->model); // We locate the camera as the light. Also, we apply the same front vector.
+}

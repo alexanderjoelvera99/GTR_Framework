@@ -1,6 +1,6 @@
 {
 	"background_color":[0.3,0.3,0.3],
-	"ambient_light":[1,1,1],
+	"ambient_light":[0.5,0.5,0.9],
 	"entities":[
 		{
 			"name":"floor",
@@ -13,6 +13,20 @@
 			"type":"PREFAB",
 			"filename":"prefabs/gmc/scene.gltf",
 			"position":[-80,0,-100],
+			"angle":-45
+		},
+		{
+			"name":"car1",
+			"type":"PREFAB",
+			"filename":"prefabs/gmc/scene.gltf",
+			"position":[-280,0,-100],
+			"angle":-45
+		},
+		{
+			"name":"car1",
+			"type":"PREFAB",
+			"filename":"prefabs/gmc/scene.gltf",
+			"position":[-480,0,-100],
 			"angle":-45
 		},
 		{
@@ -32,8 +46,36 @@
 		{
 			"name":"lamp",
 			"type":"LIGHT",
-			"position":[0,200,0],
-			"target":[0,0,0.1]
+			"light_type": "POINT",
+			"position":[-197,35,-197],
+			"light_color":[0.9, 0, 0],
+			"intensity": 0.5,
+			"target":[-80,0,-100],
+			"max_distance": 60,
+			"cone_angle": 45
+		},
+		{
+			"name":"lamp 2",
+			"type":"LIGHT",
+			"light_type": "SPOT",
+			"position":[600,50,10],
+			"light_color":[1, 1, 1],
+			"intensity": 0.5,
+			"target":[600,0,11],
+			"max_distance": 120,
+			"cone_angle": 45
+		}
+		,
+		{
+			"name":"lamp 2",
+			"type":"LIGHT",
+			"light_type": "DIRECTIONAL",
+			"position":[-80,300,-200],
+			"light_color":[0.5, 0.8, 0.1],
+			"intensity": 0.5,
+			"target":[-80,0,-100],
+			"max_distance": 5000,
+			"cone_angle": 45
 		}
 	]
 }

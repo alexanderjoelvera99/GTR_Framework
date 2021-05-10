@@ -22,10 +22,13 @@ GTR::Scene* scene = nullptr;
 GTR::Prefab* prefab = nullptr;
 GTR::Renderer* renderer = nullptr;
 GTR::BaseEntity* selected_entity = nullptr;
+GTR::LightEntity* selected_light_entity = nullptr;
 FBO* fbo = nullptr;
 Texture* texture = nullptr;
 
 float cam_speed = 10;
+int selected_light;
+int number_of_lights;
 
 Application::Application(int window_width, int window_height, SDL_Window* window)
 {
@@ -68,9 +71,15 @@ Application::Application(int window_width, int window_height, SDL_Window* window
 	scene = new GTR::Scene();
 	if (!scene->load("data/scene.json"))
 		exit(1);
+    
+    // Light to control
+    // Chosen light to modify. PENDIENTE DE CAMBIAR YA QUE PODRÍA PETAR SI NO HAY NINGUNA LUZ
+    int chosen_light = 0;
+    selected_light_entity = scene->light_entities[chosen_light];
+    number_of_lights = (int)scene->light_entities.size();
 
 	//This class will be the one in charge of rendering all 
-	renderer = new GTR::Renderer(); //here so we have opengl ready in constructor
+	renderer = new GTR::Renderer(GTR::MULTIPASS); //here so we have opengl ready in constructor
 
 	//hide the cursor
 	SDL_ShowCursor(!mouse_locked); //hide or show the mouse
@@ -100,6 +109,7 @@ void Application::render(void)
 	//renderer->renderPrefab( model, prefab, camera );
 
 	renderer->renderScene(scene, camera);
+	//renderer->renderToTexture(scene, camera);
 
 	//Draw the floor grid, helpful to have a reference point
 	if(render_debug)
@@ -115,13 +125,42 @@ void Application::update(double seconds_elapsed)
 {
 	float speed = seconds_elapsed * cam_speed; //the speed is defined by the seconds_elapsed so it goes constant
 	float orbit_speed = seconds_elapsed * 0.5;
-	
+    
 	//async input to move the camera around
 	if (Input::isKeyPressed(SDL_SCANCODE_LSHIFT)) speed *= 10; //move faster with left shift
 	if (Input::isKeyPressed(SDL_SCANCODE_W) || Input::isKeyPressed(SDL_SCANCODE_UP)) camera->move(Vector3(0.0f, 0.0f, 1.0f) * speed);
 	if (Input::isKeyPressed(SDL_SCANCODE_S) || Input::isKeyPressed(SDL_SCANCODE_DOWN)) camera->move(Vector3(0.0f, 0.0f,-1.0f) * speed);
 	if (Input::isKeyPressed(SDL_SCANCODE_A) || Input::isKeyPressed(SDL_SCANCODE_LEFT)) camera->move(Vector3(1.0f, 0.0f, 0.0f) * speed);
 	if (Input::isKeyPressed(SDL_SCANCODE_D) || Input::isKeyPressed(SDL_SCANCODE_RIGHT)) camera->move(Vector3(-1.0f, 0.0f, 0.0f) * speed);
+    
+    /*
+	// Controls for Ambient light. These controls may be temporal
+	if (Input::isKeyPressed(SDL_SCANCODE_R)) scene->changeAmbientLightColor(Vector3(-0.01f, 0.0f, 0.0f) * speed);
+	if (Input::isKeyPressed(SDL_SCANCODE_F)) scene->changeAmbientLightColor(Vector3(0.01f, 0.0f, 0.0f) * speed);
+    if (Input::isKeyPressed(SDL_SCANCODE_T)) scene->changeAmbientLightColor(Vector3(0.0f, -0.01f, 0.0f) * speed);
+    if (Input::isKeyPressed(SDL_SCANCODE_G)) scene->changeAmbientLightColor(Vector3(0.0f, 0.01f, 0.0f) * speed);
+    if (Input::isKeyPressed(SDL_SCANCODE_Y)) scene->changeAmbientLightColor(Vector3(0.0f, 0.0f, -0.01f) * speed);
+    if (Input::isKeyPressed(SDL_SCANCODE_H)) scene->changeAmbientLightColor(Vector3(0.0f, 0.0f, 0.01f) * speed);
+    // End of Controls for Ambient Light
+     */
+    
+	// Controls for light. These controls may be temporal
+	if (Input::isKeyPressed(SDL_SCANCODE_J)) selected_light_entity->changeLightColor(Vector3(-0.01f, 0.0f, 0.0f) * speed);
+	if (Input::isKeyPressed(SDL_SCANCODE_U)) selected_light_entity->changeLightColor(Vector3(0.01f, 0.0f, 0.0f) * speed);
+    if (Input::isKeyPressed(SDL_SCANCODE_K)) selected_light_entity->changeLightColor(Vector3(0.0f, -0.01f, 0.0f) * speed);
+    if (Input::isKeyPressed(SDL_SCANCODE_I)) selected_light_entity->changeLightColor(Vector3(0.0f, 0.01f, 0.0f) * speed);
+    if (Input::isKeyPressed(SDL_SCANCODE_L)) selected_light_entity->changeLightColor(Vector3(0.0f, 0.0f, -0.01f) * speed);
+    if (Input::isKeyPressed(SDL_SCANCODE_O)) selected_light_entity->changeLightColor(Vector3(0.0f, 0.0f, 0.01f) * speed);
+	// End of Controls for Point light
+
+	// Controls for light position. These controls may be temporal
+	if (Input::isKeyPressed(SDL_SCANCODE_R)) selected_light_entity->changeLightPosition(Vector3(-3.0f * speed, 0.0f, 0.0f));
+	if (Input::isKeyPressed(SDL_SCANCODE_F)) selected_light_entity->changeLightPosition(Vector3(3.0f * speed, 0.0f , 0.0f));
+    if (Input::isKeyPressed(SDL_SCANCODE_G)) selected_light_entity->changeLightPosition(Vector3(0.0f, -3.0f * speed,  0.0f));
+    if (Input::isKeyPressed(SDL_SCANCODE_T)) selected_light_entity->changeLightPosition(Vector3(0.0f, 3.0f * speed, 0.0f));
+    if (Input::isKeyPressed(SDL_SCANCODE_Y)) selected_light_entity->changeLightPosition(Vector3(0.0f, 0.0f, -3.0f * speed));
+    if (Input::isKeyPressed(SDL_SCANCODE_H)) selected_light_entity->changeLightPosition(Vector3(0.0f, 0.0f, 3.0f * speed));
+    // END of Controls for light position
 
 	//mouse input to rotate the cam
 	#ifndef SKIP_IMGUI
@@ -287,6 +326,10 @@ void Application::onKeyDown( SDL_KeyboardEvent event )
 		case SDLK_f: camera->center.set(0, 0, 0); camera->updateViewMatrix(); break;
 		case SDLK_F5: Shader::ReloadAll(); break;
 		case SDLK_F6: scene->clear(); scene->load(scene->filename.c_str()); break;
+        case SDLK_SPACE: // Change light to modify
+			selected_light = (selected_light + 1)%number_of_lights;
+        	selected_light_entity = scene->light_entities[selected_light];
+			break;
 	}
 }
 
