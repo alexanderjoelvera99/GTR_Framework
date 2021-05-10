@@ -78,6 +78,9 @@ Application::Application(int window_width, int window_height, SDL_Window* window
     selected_light_entity = scene->light_entities[chosen_light];
     number_of_lights = (int)scene->light_entities.size();
 
+	camera->lookAt(scene->main_camera.eye, scene->main_camera.center, Vector3(0, 1, 0));
+	camera->fov = scene->main_camera.fov;
+
 	//This class will be the one in charge of rendering all 
 	renderer = new GTR::Renderer(GTR::MULTIPASS); //here so we have opengl ready in constructor
 
@@ -280,8 +283,8 @@ void Application::renderDebugGUI(void)
 	ImGui::Text(getGPUStats().c_str());					   // Display some text (you can use a format strings too)
 
 	ImGui::Checkbox("Wireframe", &render_wireframe);
-	ImGui::ColorEdit4("BG color", scene->background_color.v);
-	ImGui::ColorEdit4("Ambient Light", scene->ambient_light.v);
+	ImGui::ColorEdit3("BG color", scene->background_color.v);
+	ImGui::ColorEdit3("Ambient Light", scene->ambient_light.v);
 
 	//add info to the debug panel about the camera
 	if (ImGui::TreeNode(camera, "Camera")) {
@@ -325,11 +328,15 @@ void Application::onKeyDown( SDL_KeyboardEvent event )
 		case SDLK_F1: render_debug = !render_debug; break;
 		case SDLK_f: camera->center.set(0, 0, 0); camera->updateViewMatrix(); break;
 		case SDLK_F5: Shader::ReloadAll(); break;
-		case SDLK_F6: scene->clear(); scene->load(scene->filename.c_str()); break;
+		case SDLK_F6:
+			scene->clear();
+			scene->load(scene->filename.c_str());
+			camera->lookAt(scene->main_camera.eye, scene->main_camera.center, Vector3(0, 1, 0));
+			camera->fov = scene->main_camera.fov;
+			break;
         case SDLK_SPACE: // Change light to modify
 			selected_light = (selected_light + 1)%number_of_lights;
         	selected_light_entity = scene->light_entities[selected_light];
-			break;
 	}
 }
 

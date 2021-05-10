@@ -35,3 +35,9 @@
 /.vs
 /visualstudio/.vs
 .DS_Store
+*.iobj
+*.pdb
+*.ipdb
+*.tlog
+*.tlog
+*.tlog

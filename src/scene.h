@@ -3,6 +3,7 @@
 
 #include "framework.h"
 #include "shader.h"
+#include "camera.h"
 #include <string>
 #include "camera.h"
 
@@ -98,6 +99,7 @@ namespace GTR {
 
 		Vector3 background_color;
 		Vector3 ambient_light;
+		Camera main_camera;
 
 		Scene();
 
