@@ -41,3 +41,6 @@
 *.tlog
 *.tlog
 *.tlog
+*.plist
+*.xcuserstate
+*.xcbkptlist

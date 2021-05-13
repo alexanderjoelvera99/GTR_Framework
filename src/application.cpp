@@ -82,7 +82,7 @@ Application::Application(int window_width, int window_height, SDL_Window* window
 	camera->fov = scene->main_camera.fov;
 
 	//This class will be the one in charge of rendering all 
-	renderer = new GTR::Renderer(GTR::MULTIPASS); //here so we have opengl ready in constructor
+	renderer = new GTR::Renderer(GTR::SINGLEPASS, "singlepass"); //here so we have opengl ready in constructor
 
 	//hide the cursor
 	SDL_ShowCursor(!mouse_locked); //hide or show the mouse
@@ -112,11 +112,11 @@ void Application::render(void)
 	//renderer->renderPrefab( model, prefab, camera );
 
 	renderer->renderScene(scene, camera);
-	//renderer->renderToTexture(scene, camera);
+	//renderer->renderLightDepthBuffer(scene, scene->light_entities[0], renderer->fbos[0]);
 
 	//Draw the floor grid, helpful to have a reference point
-	if(render_debug)
-		drawGrid();
+	//if(render_debug)
+	//	drawGrid();
 
     glDisable(GL_DEPTH_TEST);
     //render anything in the gui after this
@@ -154,7 +154,6 @@ void Application::update(double seconds_elapsed)
     if (Input::isKeyPressed(SDL_SCANCODE_I)) selected_light_entity->changeLightColor(Vector3(0.0f, 0.01f, 0.0f) * speed);
     if (Input::isKeyPressed(SDL_SCANCODE_L)) selected_light_entity->changeLightColor(Vector3(0.0f, 0.0f, -0.01f) * speed);
     if (Input::isKeyPressed(SDL_SCANCODE_O)) selected_light_entity->changeLightColor(Vector3(0.0f, 0.0f, 0.01f) * speed);
-	// End of Controls for Point light
 
 	// Controls for light position. These controls may be temporal
 	if (Input::isKeyPressed(SDL_SCANCODE_R)) selected_light_entity->changeLightPosition(Vector3(-3.0f * speed, 0.0f, 0.0f));
@@ -163,7 +162,6 @@ void Application::update(double seconds_elapsed)
     if (Input::isKeyPressed(SDL_SCANCODE_T)) selected_light_entity->changeLightPosition(Vector3(0.0f, 3.0f * speed, 0.0f));
     if (Input::isKeyPressed(SDL_SCANCODE_Y)) selected_light_entity->changeLightPosition(Vector3(0.0f, 0.0f, -3.0f * speed));
     if (Input::isKeyPressed(SDL_SCANCODE_H)) selected_light_entity->changeLightPosition(Vector3(0.0f, 0.0f, 3.0f * speed));
-    // END of Controls for light position
 
 	//mouse input to rotate the cam
 	#ifndef SKIP_IMGUI

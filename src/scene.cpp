@@ -3,6 +3,7 @@
 
 #include "prefab.h"
 #include "extra/cJSON.h"
+#include "application.h"
 
 GTR::Scene* GTR::Scene::instance = NULL;
 
@@ -181,8 +182,11 @@ void GTR::PrefabEntity::renderInMenu()
 
 GTR::LightEntity::LightEntity() : GTR::BaseEntity(){
 	entity_type = LIGHT;
-	// Default light type
-	light_type = DIRECTIONAL;
+	// default values
+	this->color = Vector3(0.0f, 0.0f, 0.0f);
+	this->light_type = DIRECTIONAL;
+	this->max_distance = 0;
+	this->cone_angle = 0;
 	this->camera = new Camera();
 }
 
@@ -197,15 +201,13 @@ void GTR::LightEntity::changeLightColor(Vector3 delta){
 
 void GTR::LightEntity::changeLightPosition(Vector3 delta){
 	this->model.translateGlobal(delta[0], delta[1], delta[2]);
-	setCameraAsLight();
+	this->camera->move(delta);
 }
 
 void GTR::LightEntity::setUniforms(Shader* shader){
 	shader->setUniform("u_light_color", this->color);
-    Vector3 light_pos = this->model.getTranslation();
 	shader->setUniform("u_light_position",this->model.getTranslation());
 	shader->setUniform("u_light_type",this->light_type);
-	Vector3 front_vector = this->model.frontVector();
 	shader->setUniform("u_light_direction",this->model.frontVector());
 	shader->setUniform("u_max_distance",this->max_distance);
 	shader->setUniform("u_cone_angle",this->cone_angle);
@@ -215,9 +217,9 @@ void GTR::LightEntity::setUniforms(Shader* shader){
 // Configuring especial json fields for Light entity
 void GTR::LightEntity::configure(cJSON* json)
 {
-	if (cJSON_GetObjectItem(json, "light_color"))
+	if (cJSON_GetObjectItem(json, "color"))
 	{
-		Vector3 light_color = readJSONVector3(json, "light_color", Vector3(0, 0, 0));
+		Vector3 light_color = readJSONVector3(json, "color", Vector3(0, 0, 0));
 		this->color = light_color;
 	}
 	if (cJSON_GetObjectItem(json, "intensity"))
@@ -251,9 +253,9 @@ void GTR::LightEntity::configure(cJSON* json)
 			this->model.setFrontAndOrthonormalize(front_vector);
 		}
 
-	if (cJSON_GetObjectItem(json, "max_distance"))
+	if (cJSON_GetObjectItem(json, "max_dist"))
 	{
-		float max_distance = readJSONNumber(json, "max_distance", 0.0f);
+		float max_distance = readJSONNumber(json, "max_dist", 0.0f);
 		this->max_distance = max_distance;
 	}
 	if (cJSON_GetObjectItem(json, "cone_angle"))
@@ -267,5 +269,8 @@ void GTR::LightEntity::configure(cJSON* json)
 }
 
 void GTR::LightEntity::setCameraAsLight(){
-	camera->lookAt(this->model); // We locate the camera as the light. Also, we apply the same front vector.
+	camera->lookAt(this->model.getTranslation(), this->model.frontVector(), Vector3(0.0f,1.0f,0.0f)); // We locate the camera as the light. Also, we apply the same front vector.
+	int w = Application::instance->window_height;
+	int h = Application::instance->window_height;
+	camera->setPerspective( 45.f, w/(float)h, 1.0f, 10000.f);
 }

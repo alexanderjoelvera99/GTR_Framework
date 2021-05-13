@@ -13,19 +13,40 @@
 
 
 using namespace GTR;
-Renderer::Renderer(GTR::eMultipleLightRendering multiple_light_rendering){
+Renderer::Renderer(GTR::eMultipleLightRendering multiple_light_rendering, std::string shader_name){
 	this->multiple_light_rendering = multiple_light_rendering;
-	this->fbo_texture = new Texture(Application::instance->window_width, Application::instance->window_height, GL_RGB, GL_UNSIGNED_INT);
-	this->fbo = new FBO();
-	this->fbo->setTexture(fbo_texture);
+	this->shader_name = shader_name;
+	//this->fbo_texture = new Texture(Application::instance->window_width, Application::instance->window_height, GL_RGB, GL_UNSIGNED_INT);
+	int number_lights = (int)Scene::instance->light_entities.size();
+	this->fbos = std::vector<FBO*>(number_lights);
+    
+	for (int i = 0; i < number_lights; i++){
+        this->fbos[i] = new FBO();
+		this->fbos[i]->create(Application::instance->window_width, Application::instance->window_height);
+	}
+	//this->fbo->setTexture(fbo_texture);
 }
 
-
-void Renderer::renderToTexture(Scene* scene, Camera* camera){
-	this->fbo->bind();
+void Renderer::renderToTexture(Scene* scene, Camera* camera, FBO* fbo){
+	fbo->bind();
 	renderScene(scene, camera);
-	this->fbo->unbind();
-	fbo_texture->toViewport();
+	fbo->unbind();
+}
+
+void Renderer::renderLightDepthBuffer(Scene* scene, LightEntity* light, FBO* fbo){
+	renderToTexture(scene, light->camera, fbo);
+    //remember to disable ztest if rendering quads!
+    glDisable(GL_DEPTH_TEST);
+
+    //to show on the screen the content of a texture
+    //fbo->color_textures[0]->toViewport();
+
+    //to use a special shader
+    Shader* zshader = Shader::Get("depth");
+    zshader->enable();
+    zshader->setUniform("u_camera_nearfar", Vector2(light->camera->near_plane, light->camera->far_plane));
+    fbo->depth_texture->toViewport(zshader);
+    //zshader->disable();
 }
 
 void Renderer::multipassRendering(std::vector<LightEntity*> lights, Shader* shader, Mesh* mesh){
@@ -138,6 +159,7 @@ void Renderer::renderMeshWithMaterial(const Matrix44 model, Mesh* mesh, GTR::Mat
 	GTR::Scene* scene = GTR::Scene::instance;
     std::vector<GTR::LightEntity*> light_entities = scene->light_entities;
     bool has_emissive_light = true;
+    bool has_normal_texture = true;
     int number_of_lights = (int)light_entities.size();
 
     // Define Textures
@@ -147,6 +169,8 @@ void Renderer::renderMeshWithMaterial(const Matrix44 model, Mesh* mesh, GTR::Mat
         has_emissive_light = false;
 	texture[2] = material->metallic_roughness_texture.texture;
 	texture[3] = material->normal_texture.texture;
+    if(texture[3] == NULL)
+        has_normal_texture = false;
 	texture[4] = material->occlusion_texture.texture;
 	for (int t = 0; t < texture.size(); t++){
 		if (texture[t] == NULL)
@@ -170,7 +194,7 @@ void Renderer::renderMeshWithMaterial(const Matrix44 model, Mesh* mesh, GTR::Mat
     assert(glGetError() == GL_NO_ERROR);
 
 	//chose a shader
-	shader = Shader::Get("light");
+	shader = Shader::Get(this->shader_name.c_str());
 
     assert(glGetError() == GL_NO_ERROR);
 
@@ -183,8 +207,6 @@ void Renderer::renderMeshWithMaterial(const Matrix44 model, Mesh* mesh, GTR::Mat
 	shader->setUniform("u_viewprojection", camera->viewprojection_matrix);
 	shader->setUniform("u_camera_position", camera->eye);
 	shader->setUniform("u_model", model );
-	float t = getTime();
-	shader->setUniform("u_time", t );
 
 	shader->setUniform("u_color", material->color);
     shader->setUniform("u_has_emissive_light", has_emissive_light);
@@ -193,6 +215,7 @@ void Renderer::renderMeshWithMaterial(const Matrix44 model, Mesh* mesh, GTR::Mat
     shader->setUniform("u_emissive_factor", material->emissive_factor);
     shader->setUniform("u_metallic_roughness_texture", texture[2], 2);
     shader->setUniform("u_normal_texture", texture[3], 3);
+    shader->setUniform("u_has_normal_texture", has_normal_texture);
     shader->setUniform("u_occlusion_texture", texture[4], 4);
      
 
@@ -235,6 +258,7 @@ void Renderer::renderMeshWithMaterial(const Matrix44 model, Mesh* mesh, GTR::Mat
         multipassRendering(light_entities, shader, mesh);
     }
     else {
+        // Use only the first light
         light_entities[0]->setUniforms(shader);
 		//do the draw call that renders the mesh into the screen
 		mesh->render(GL_TRIANGLES);

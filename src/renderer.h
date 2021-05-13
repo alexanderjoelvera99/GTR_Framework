@@ -21,17 +21,19 @@ namespace GTR {
 	class Renderer
 	{
 	eMultipleLightRendering multiple_light_rendering;
-	FBO* fbo;
-	Texture* fbo_texture;
+	std::string shader_name;
 
 	public:
-
+		std::vector<FBO*> fbos;
 		//add here your functions
 		//...
 		void multipassRendering(std::vector<LightEntity*> lights, Shader* shader, Mesh* mesh);
-		Renderer(GTR::eMultipleLightRendering multiple_light_rendering);
+		Renderer(GTR::eMultipleLightRendering multiple_light_rendering, std::string shader_name);
 
-		void renderToTexture(Scene* scene, Camera* camera);
+		void renderToTexture(Scene* scene, Camera* camera, FBO* fbo);
+
+		// Rendering light depth buffer for shadow maps
+		void renderLightDepthBuffer(Scene* scene, LightEntity* light, FBO* fbo);
 
 		//renders several elements of the scene
 		void renderScene(GTR::Scene* scene, Camera* camera);
