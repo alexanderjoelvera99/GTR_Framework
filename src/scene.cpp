@@ -188,6 +188,8 @@ GTR::LightEntity::LightEntity() : GTR::BaseEntity(){
 	this->max_distance = 0;
 	this->cone_angle = 0;
 	this->camera = new Camera();
+	this->fbo = new FBO();
+	this->fbo->create(Application::instance->window_width, Application::instance->window_height);
 }
 
 GTR::LightEntity::~LightEntity(){}
@@ -201,7 +203,7 @@ void GTR::LightEntity::changeLightColor(Vector3 delta){
 
 void GTR::LightEntity::changeLightPosition(Vector3 delta){
 	this->model.translateGlobal(delta[0], delta[1], delta[2]);
-	this->camera->move(delta);
+	this->camera->move(Vector3(-1.0f, -1.0f, -1.0f)*delta);
 }
 
 void GTR::LightEntity::setUniforms(Shader* shader){
@@ -261,16 +263,26 @@ void GTR::LightEntity::configure(cJSON* json)
 	if (cJSON_GetObjectItem(json, "cone_angle"))
 	{
 		float cone_angle = readJSONNumber(json, "cone_angle", 0.0f);
-		this->cone_angle = cone_angle*PI/(180.0f);
+        this->cone_angle = cone_angle; //
 	}
-
+	int w = Application::instance->window_height;
+	int h = Application::instance->window_height;
+	// Setting perspective for the camera to use in Shadow maps
+	if(this->light_type == SPOT){
+		camera->setPerspective( this->cone_angle, w/(float)h, 1.0f, this->max_distance);
+	}
+	else if(this->light_type == DIRECTIONAL){
+		camera->setOrthographic(w/2, w/2, h/2, h/2, 1, this->max_distance);
+	}
+	else if(this->light_type == POINT){
+		// De momento nada... Pero se puede applicar un cube map
+	}
 	// Set the camera look at
 	setCameraAsLight();
 }
 
 void GTR::LightEntity::setCameraAsLight(){
-	camera->lookAt(this->model.getTranslation(), this->model.frontVector(), Vector3(0.0f,1.0f,0.0f)); // We locate the camera as the light. Also, we apply the same front vector.
-	int w = Application::instance->window_height;
-	int h = Application::instance->window_height;
-	camera->setPerspective( 45.f, w/(float)h, 1.0f, 10000.f);
+	Vector3 light_position = this->model.getTranslation();
+	Vector3 light_front = this->model.frontVector();
+	camera->lookAt(light_position, light_position + light_front, Vector3(0.0f,1.0f,0.0f)); // We locate the camera as the light. Also, we apply the same front vector.
 }

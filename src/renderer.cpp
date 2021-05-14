@@ -16,15 +16,6 @@ using namespace GTR;
 Renderer::Renderer(GTR::eMultipleLightRendering multiple_light_rendering, std::string shader_name){
 	this->multiple_light_rendering = multiple_light_rendering;
 	this->shader_name = shader_name;
-	//this->fbo_texture = new Texture(Application::instance->window_width, Application::instance->window_height, GL_RGB, GL_UNSIGNED_INT);
-	int number_lights = (int)Scene::instance->light_entities.size();
-	this->fbos = std::vector<FBO*>(number_lights);
-    
-	for (int i = 0; i < number_lights; i++){
-        this->fbos[i] = new FBO();
-		this->fbos[i]->create(Application::instance->window_width, Application::instance->window_height);
-	}
-	//this->fbo->setTexture(fbo_texture);
 }
 
 void Renderer::renderToTexture(Scene* scene, Camera* camera, FBO* fbo){
@@ -33,20 +24,23 @@ void Renderer::renderToTexture(Scene* scene, Camera* camera, FBO* fbo){
 	fbo->unbind();
 }
 
-void Renderer::renderLightDepthBuffer(Scene* scene, LightEntity* light, FBO* fbo){
+void Renderer::renderLightDepthBuffer(Scene* scene, LightEntity* light){
+	FBO* fbo = light->fbo;
 	renderToTexture(scene, light->camera, fbo);
     //remember to disable ztest if rendering quads!
     glDisable(GL_DEPTH_TEST);
 
-    //to show on the screen the content of a texture
-    //fbo->color_textures[0]->toViewport();
+	viewDepthBuffer(light);
+}
 
-    //to use a special shader
+void Renderer::viewDepthBuffer(LightEntity* light){
+	FBO* fbo = light->fbo;
+	//to use a special shader
     Shader* zshader = Shader::Get("depth");
     zshader->enable();
     zshader->setUniform("u_camera_nearfar", Vector2(light->camera->near_plane, light->camera->far_plane));
     fbo->depth_texture->toViewport(zshader);
-    //zshader->disable();
+    zshader->disable();
 }
 
 void Renderer::multipassRendering(std::vector<LightEntity*> lights, Shader* shader, Mesh* mesh){

@@ -82,7 +82,7 @@ Application::Application(int window_width, int window_height, SDL_Window* window
 	camera->fov = scene->main_camera.fov;
 
 	//This class will be the one in charge of rendering all 
-	renderer = new GTR::Renderer(GTR::SINGLEPASS, "singlepass"); //here so we have opengl ready in constructor
+	renderer = new GTR::Renderer(GTR::MULTIPASS, "light"); //here so we have opengl ready in constructor
 
 	//hide the cursor
 	SDL_ShowCursor(!mouse_locked); //hide or show the mouse
@@ -111,8 +111,8 @@ void Application::render(void)
 	//Matrix44 model;
 	//renderer->renderPrefab( model, prefab, camera );
 
-	renderer->renderScene(scene, camera);
-	//renderer->renderLightDepthBuffer(scene, scene->light_entities[0], renderer->fbos[0]);
+	//renderer->renderScene(scene, camera);
+	renderer->renderLightDepthBuffer(scene, scene->light_entities[0]);
 
 	//Draw the floor grid, helpful to have a reference point
 	//if(render_debug)

@@ -434,7 +434,7 @@ void main()
 				//if the light is a directional light the light
 				//vector is the same for all pixels
 				//we assume the vector is normalized
-				vec3 L = normalize(u_light_direction[i]);
+				vec3 L = -normalize(u_light_direction[i]);
 
 				//compute how much is aligned
 				float NdotL = dot(N,L);
@@ -455,7 +455,7 @@ void main()
 				att_factor = max(att_factor, 0.0);
 
 				// Adding the diffuse light
-				light += (NdotL * u_light_color[i]) * att_factor;	
+				light += vec3(10)*(NdotL * u_light_color[i]) * att_factor;	
 			}
 
 			//Point light

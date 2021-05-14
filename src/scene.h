@@ -6,6 +6,7 @@
 #include "camera.h"
 #include <string>
 #include "camera.h"
+#include "fbo.h"
 
 //forward declaration
 class cJSON; 
@@ -74,9 +75,10 @@ namespace GTR {
 		eLightType light_type;
 		Vector3 target;
 		float max_distance;
-		float cone_angle;
+		float cone_angle; // In degrees
 		float area_size;
 		Camera* camera; // For shadow maps
+		FBO* fbo;
 		
 		//Constructor
 		LightEntity();
