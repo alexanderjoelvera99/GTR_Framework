@@ -272,7 +272,7 @@ void main()
 		//if the light is a directional light the light
 		//vector is the same for all pixels
 		//we assume the vector is normalized
-		vec3 L = normalize(u_light_direction);
+		vec3 L = -normalize(u_light_direction);
 
 		//compute how much is aligned
 		float NdotL = dot(N,L);

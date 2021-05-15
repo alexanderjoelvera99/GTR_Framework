@@ -263,13 +263,15 @@ void GTR::LightEntity::configure(cJSON* json)
 	if (cJSON_GetObjectItem(json, "cone_angle"))
 	{
 		float cone_angle = readJSONNumber(json, "cone_angle", 0.0f);
-        this->cone_angle = cone_angle; //
+        this->cone_angle = (cone_angle*PI)/180; 
 	}
 	int w = Application::instance->window_height;
 	int h = Application::instance->window_height;
 	// Setting perspective for the camera to use in Shadow maps
 	if(this->light_type == SPOT){
-		camera->setPerspective( this->cone_angle, w/(float)h, 1.0f, this->max_distance);
+		float cone_angle_degrees = (this->cone_angle*180)/PI;
+		float aspect = w/(float)h;
+		camera->setPerspective( cone_angle_degrees, aspect, 1.0f, this->max_distance);
 	}
 	else if(this->light_type == DIRECTIONAL){
 		camera->setOrthographic(w/2, w/2, h/2, h/2, 1, this->max_distance);

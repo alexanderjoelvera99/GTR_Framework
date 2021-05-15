@@ -111,8 +111,8 @@ void Application::render(void)
 	//Matrix44 model;
 	//renderer->renderPrefab( model, prefab, camera );
 
-	//renderer->renderScene(scene, camera);
-	renderer->renderLightDepthBuffer(scene, scene->light_entities[0]);
+	renderer->renderScene(scene, camera);
+	//renderer->renderLightDepthBuffer(scene, scene->light_entities[0]);
 
 	//Draw the floor grid, helpful to have a reference point
 	//if(render_debug)
