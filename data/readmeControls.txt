@@ -18,8 +18,9 @@ Light position controls:
 
 Change the light to control -> SPACE
 
-Rendering options:
-* Multipass: Use "light" shader and MULTIPASS mode. You can initialize the renderer as follows
-    renderer = new GTR::Renderer(GTR::MULTIPASS, "light");
-* Singlepass: Use "singlepass" shader and SINGLEPASS mode. You can initialize the renderer as follows
-    renderer = new GTR::Renderer(GTR::SINGLEPASS, "singlepass");
+Change multiple light rendering and shader -> 0
+    Rendering options:
+    * Multipass: Use "light" shader and MULTIPASS mode. You can initialize the renderer as follows
+        renderer = new GTR::Renderer(GTR::MULTIPASS, "light");
+    * Singlepass: Use "singlepass" shader and SINGLEPASS mode. You can initialize the renderer as follows
+        renderer = new GTR::Renderer(GTR::SINGLEPASS, "singlepass");

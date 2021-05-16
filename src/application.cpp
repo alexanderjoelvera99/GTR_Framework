@@ -82,7 +82,7 @@ Application::Application(int window_width, int window_height, SDL_Window* window
 	camera->fov = scene->main_camera.fov;
 
 	//This class will be the one in charge of rendering all 
-	renderer = new GTR::Renderer(GTR::SINGLEPASS, "singlepass"); //here so we have opengl ready in constructor
+	renderer = new GTR::Renderer(GTR::NOMULTIPLELIGHT, "light"); //here so we have opengl ready in constructor
 
 	//hide the cursor
 	SDL_ShowCursor(!mouse_locked); //hide or show the mouse
@@ -335,6 +335,10 @@ void Application::onKeyDown( SDL_KeyboardEvent event )
         case SDLK_SPACE: // Change light to modify
 			selected_light = (selected_light + 1)%number_of_lights;
         	selected_light_entity = scene->light_entities[selected_light];
+            break;
+        case SDLK_0:
+            renderer->changeMultiLightRendering();
+            break;
 	}
 }
 

@@ -14,7 +14,7 @@ namespace GTR {
 	enum eMultipleLightRendering{
 		SINGLEPASS = 0,
 		MULTIPASS = 1,
-        NOMULTIPLELIGHT = -1
+        NOMULTIPLELIGHT = 2
 	};
 	
 	// This class is in charge of rendering anything in our system.
@@ -28,6 +28,9 @@ namespace GTR {
 	public:
 		//add here your functions
 		//...
+		// Change multiple light rendering type
+		void changeMultiLightRendering();
+
 		void multipassRendering(std::vector<LightEntity*> lights, Shader* shader, Mesh* mesh);
 		Renderer(GTR::eMultipleLightRendering multiple_light_rendering, std::string shader_name);
 

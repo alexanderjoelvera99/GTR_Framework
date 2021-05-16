@@ -18,6 +18,16 @@ Renderer::Renderer(GTR::eMultipleLightRendering multiple_light_rendering, std::s
 	this->shader_name = shader_name;
 }
 
+void Renderer::changeMultiLightRendering(){
+	this->multiple_light_rendering = static_cast<GTR::eMultipleLightRendering>((this->multiple_light_rendering + 1) % 3);
+	if(multiple_light_rendering == SINGLEPASS){
+		shader_name = "singlepass";
+	}
+	else if(multiple_light_rendering == MULTIPASS || multiple_light_rendering == NOMULTIPLELIGHT){
+		shader_name = "light";
+	}
+}
+
 void Renderer::renderToTexture(Scene* scene, Camera* camera, FBO* fbo){
 	fbo->bind();
 	renderScene(scene, camera);
