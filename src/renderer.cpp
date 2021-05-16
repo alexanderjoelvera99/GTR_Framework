@@ -49,6 +49,10 @@ void Renderer::viewDepthBuffer(LightEntity* light){
     Shader* zshader = Shader::Get("depth");
     zshader->enable();
     zshader->setUniform("u_camera_nearfar", Vector2(light->camera->near_plane, light->camera->far_plane));
+    
+    int w = Application::instance->window_width;
+    int h = Application::instance->window_height;
+    glViewport(0, 0, w*0.5, h*0.5);
     fbo->depth_texture->toViewport(zshader);
     zshader->disable();
 }
@@ -73,7 +77,7 @@ void Renderer::collectRenderCall(GTR::Scene* scene, Camera* camera){
 		{
 			PrefabEntity* pent = (GTR::PrefabEntity*)ent;
 			if(pent->prefab)
-				renderPrefab(ent->model, pent->prefab, camera);
+				collectPrefabInRenderCall(ent->model, pent->prefab, camera);
 		}
 	}
 }
@@ -133,15 +137,15 @@ void Renderer::renderScene(GTR::Scene* scene, Camera* camera)
 }
 
 //renders all the prefab
-void Renderer::renderPrefab(const Matrix44& model, GTR::Prefab* prefab, Camera* camera)
+void Renderer::collectPrefabInRenderCall(const Matrix44& model, GTR::Prefab* prefab, Camera* camera)
 {
 	assert(prefab && "PREFAB IS NULL");
 	//assign the model to the root node
-	renderNode(model, &prefab->root, camera);
+	collectNodesInRenderCall(model, &prefab->root, camera);
 }
 
 //renders a node of the prefab and its children
-void Renderer::renderNode(const Matrix44& prefab_model, GTR::Node* node, Camera* camera)
+void Renderer::collectNodesInRenderCall(const Matrix44& prefab_model, GTR::Node* node, Camera* camera)
 {
 	if (!node->visible)
 		return;
@@ -168,7 +172,7 @@ void Renderer::renderNode(const Matrix44& prefab_model, GTR::Node* node, Camera*
 
 	//iterate recursively with children
 	for (int i = 0; i < node->children.size(); ++i)
-		renderNode(prefab_model, node->children[i], camera);
+		collectNodesInRenderCall(prefab_model, node->children[i], camera);
 }
 
 //renders a mesh given its transform and material

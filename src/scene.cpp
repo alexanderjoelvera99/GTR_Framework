@@ -202,8 +202,8 @@ void GTR::LightEntity::changeLightColor(Vector3 delta){
 }
 
 void GTR::LightEntity::changeLightPosition(Vector3 delta){
-	this->model.translateGlobal(delta[0], delta[1], delta[2]);
-	this->camera->move(Vector3(-1.0f, -1.0f, -1.0f)*delta);
+	this->model.translate(delta[0], delta[1], delta[2]);
+	this->camera->move(delta);
 }
 
 void GTR::LightEntity::setUniforms(Shader* shader){

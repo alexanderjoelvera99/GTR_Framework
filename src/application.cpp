@@ -111,12 +111,13 @@ void Application::render(void)
 	//Matrix44 model;
 	//renderer->renderPrefab( model, prefab, camera );
 
-	renderer->renderScene(scene, camera);
-	//renderer->renderLightDepthBuffer(scene, scene->light_entities[0]);
-
-	//Draw the floor grid, helpful to have a reference point
-	//if(render_debug)
-	//	drawGrid();
+	glViewport(0, 0, window_width, window_height);
+    renderer->renderScene(scene, camera);
+    //Draw the floor grid, helpful to have a reference point
+    if(render_debug)
+        drawGrid();
+    
+	renderer->renderLightDepthBuffer(scene, scene->light_entities[0]);
 
     glDisable(GL_DEPTH_TEST);
     //render anything in the gui after this
@@ -136,17 +137,6 @@ void Application::update(double seconds_elapsed)
 	if (Input::isKeyPressed(SDL_SCANCODE_A) || Input::isKeyPressed(SDL_SCANCODE_LEFT)) camera->move(Vector3(1.0f, 0.0f, 0.0f) * speed);
 	if (Input::isKeyPressed(SDL_SCANCODE_D) || Input::isKeyPressed(SDL_SCANCODE_RIGHT)) camera->move(Vector3(-1.0f, 0.0f, 0.0f) * speed);
     
-    /*
-	// Controls for Ambient light. These controls may be temporal
-	if (Input::isKeyPressed(SDL_SCANCODE_R)) scene->changeAmbientLightColor(Vector3(-0.01f, 0.0f, 0.0f) * speed);
-	if (Input::isKeyPressed(SDL_SCANCODE_F)) scene->changeAmbientLightColor(Vector3(0.01f, 0.0f, 0.0f) * speed);
-    if (Input::isKeyPressed(SDL_SCANCODE_T)) scene->changeAmbientLightColor(Vector3(0.0f, -0.01f, 0.0f) * speed);
-    if (Input::isKeyPressed(SDL_SCANCODE_G)) scene->changeAmbientLightColor(Vector3(0.0f, 0.01f, 0.0f) * speed);
-    if (Input::isKeyPressed(SDL_SCANCODE_Y)) scene->changeAmbientLightColor(Vector3(0.0f, 0.0f, -0.01f) * speed);
-    if (Input::isKeyPressed(SDL_SCANCODE_H)) scene->changeAmbientLightColor(Vector3(0.0f, 0.0f, 0.01f) * speed);
-    // End of Controls for Ambient Light
-     */
-    
 	// Controls for light. These controls may be temporal
 	if (Input::isKeyPressed(SDL_SCANCODE_J)) selected_light_entity->changeLightColor(Vector3(-0.01f, 0.0f, 0.0f) * speed);
 	if (Input::isKeyPressed(SDL_SCANCODE_U)) selected_light_entity->changeLightColor(Vector3(0.01f, 0.0f, 0.0f) * speed);
@@ -156,12 +146,12 @@ void Application::update(double seconds_elapsed)
     if (Input::isKeyPressed(SDL_SCANCODE_O)) selected_light_entity->changeLightColor(Vector3(0.0f, 0.0f, 0.01f) * speed);
 
 	// Controls for light position. These controls may be temporal
-	if (Input::isKeyPressed(SDL_SCANCODE_R)) selected_light_entity->changeLightPosition(Vector3(-3.0f * speed, 0.0f, 0.0f));
-	if (Input::isKeyPressed(SDL_SCANCODE_F)) selected_light_entity->changeLightPosition(Vector3(3.0f * speed, 0.0f , 0.0f));
-    if (Input::isKeyPressed(SDL_SCANCODE_G)) selected_light_entity->changeLightPosition(Vector3(0.0f, -3.0f * speed,  0.0f));
-    if (Input::isKeyPressed(SDL_SCANCODE_T)) selected_light_entity->changeLightPosition(Vector3(0.0f, 3.0f * speed, 0.0f));
-    if (Input::isKeyPressed(SDL_SCANCODE_Y)) selected_light_entity->changeLightPosition(Vector3(0.0f, 0.0f, -3.0f * speed));
-    if (Input::isKeyPressed(SDL_SCANCODE_H)) selected_light_entity->changeLightPosition(Vector3(0.0f, 0.0f, 3.0f * speed));
+	if (Input::isKeyPressed(SDL_SCANCODE_F)) selected_light_entity->changeLightPosition(Vector3(-3.0f * speed, 0.0f, 0.0f));
+	if (Input::isKeyPressed(SDL_SCANCODE_H)) selected_light_entity->changeLightPosition(Vector3(3.0f * speed, 0.0f , 0.0f));
+    if (Input::isKeyPressed(SDL_SCANCODE_Y)) selected_light_entity->changeLightPosition(Vector3(0.0f, -3.0f * speed,  0.0f));
+    if (Input::isKeyPressed(SDL_SCANCODE_R)) selected_light_entity->changeLightPosition(Vector3(0.0f, 3.0f * speed, 0.0f));
+    if (Input::isKeyPressed(SDL_SCANCODE_G)) selected_light_entity->changeLightPosition(Vector3(0.0f, 0.0f, -3.0f * speed));
+    if (Input::isKeyPressed(SDL_SCANCODE_T)) selected_light_entity->changeLightPosition(Vector3(0.0f, 0.0f, 3.0f * speed));
 
 	//mouse input to rotate the cam
 	#ifndef SKIP_IMGUI
