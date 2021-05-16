@@ -82,7 +82,7 @@ Application::Application(int window_width, int window_height, SDL_Window* window
 	camera->fov = scene->main_camera.fov;
 
 	//This class will be the one in charge of rendering all 
-	renderer = new GTR::Renderer(GTR::MULTIPASS, "light"); //here so we have opengl ready in constructor
+	renderer = new GTR::Renderer(GTR::SINGLEPASS, "singlepass"); //here so we have opengl ready in constructor
 
 	//hide the cursor
 	SDL_ShowCursor(!mouse_locked); //hide or show the mouse

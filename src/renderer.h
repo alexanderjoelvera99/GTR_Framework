@@ -1,6 +1,7 @@
 #pragma once
 #include "prefab.h"
 #include "fbo.h"
+#include "renderCall.h"
 
 //forward declarations
 class Camera;
@@ -20,8 +21,9 @@ namespace GTR {
 	// Separating the render from anything else makes the code cleaner
 	class Renderer
 	{
-	eMultipleLightRendering multiple_light_rendering;
-	std::string shader_name;
+		std::vector<RenderCall*> render_call_vector;
+		eMultipleLightRendering multiple_light_rendering;
+		std::string shader_name;
 
 	public:
 		//add here your functions
@@ -36,6 +38,10 @@ namespace GTR {
 
 		// View the depth buffer
 		void viewDepthBuffer(LightEntity* light);
+
+		//Sort render call
+		void collectRenderCall(GTR::Scene* scene, Camera* camera);
+		void clearRenderCall();
 
 		//renders several elements of the scene
 		void renderScene(GTR::Scene* scene, Camera* camera);

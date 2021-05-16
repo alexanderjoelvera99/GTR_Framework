@@ -12,9 +12,9 @@ class Texture;
 namespace GTR {
 
 	enum eAlphaMode {
-		NO_ALPHA,
-		MASK,
-		BLEND
+		NO_ALPHA = 0,
+		MASK = 1,
+		BLEND = 2
 	};
 
 	enum eChannels {

@@ -43,6 +43,35 @@ void Renderer::viewDepthBuffer(LightEntity* light){
     zshader->disable();
 }
 
+void Renderer::collectRenderCall(GTR::Scene* scene, Camera* camera){
+	//set the clear color (the background color)
+	glClearColor(scene->background_color.x, scene->background_color.y, scene->background_color.z, 1.0);
+
+	// Clear the color and the depth buffer
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	checkGLErrors();
+
+	//render entities
+	for (int i = 0; i < scene->entities.size(); ++i)
+	{
+		BaseEntity* ent = scene->entities[i];
+		if (!ent->visible)
+			continue;
+
+		//is a prefab!
+		if (ent->entity_type == PREFAB)
+		{
+			PrefabEntity* pent = (GTR::PrefabEntity*)ent;
+			if(pent->prefab)
+				renderPrefab(ent->model, pent->prefab, camera);
+		}
+	}
+}
+
+void Renderer::clearRenderCall(){
+	this->render_call_vector.clear();
+}
+
 void Renderer::multipassRendering(std::vector<LightEntity*> lights, Shader* shader, Mesh* mesh){
 	int num_lights = (int)lights.size();
 	
@@ -78,28 +107,19 @@ void Renderer::multipassRendering(std::vector<LightEntity*> lights, Shader* shad
 
 void Renderer::renderScene(GTR::Scene* scene, Camera* camera)
 {
-	//set the clear color (the background color)
-	glClearColor(scene->background_color.x, scene->background_color.y, scene->background_color.z, 1.0);
+	// Collecting render calls
+	collectRenderCall(scene, camera);
+	// sorting by alpha
+	std::sort(render_call_vector.begin(), render_call_vector.end(), RenderCall::sorting_renderCalls);
 
-	// Clear the color and the depth buffer
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	checkGLErrors();
-
-	//render entities
-	for (int i = 0; i < scene->entities.size(); ++i)
-	{
-		BaseEntity* ent = scene->entities[i];
-		if (!ent->visible)
-			continue;
-
-		//is a prefab!
-		if (ent->entity_type == PREFAB)
-		{
-			PrefabEntity* pent = (GTR::PrefabEntity*)ent;
-			if(pent->prefab)
-				renderPrefab(ent->model, pent->prefab, camera);
-		}
+	// Rendering
+	for (int i = 0; i < render_call_vector.size(); i++){
+		renderMeshWithMaterial(render_call_vector[i]->model, render_call_vector[i]->mesh, render_call_vector[i]->material, camera);
 	}
+
+	//Clear rendercall
+	clearRenderCall();
+
 }
 
 //renders all the prefab
@@ -129,7 +149,9 @@ void Renderer::renderNode(const Matrix44& prefab_model, GTR::Node* node, Camera*
 		if (camera->testBoxInFrustum(world_bounding.center, world_bounding.halfsize) )
 		{
 			//render node mesh
-			renderMeshWithMaterial( node_model, node->mesh, node->material, camera );
+			//renderMeshWithMaterial( node_model, node->mesh, node->material, camera );
+			RenderCall* rc = new RenderCall(&node_model, node->mesh, node->material, 10.0f); // De momento forzamos un mismo número de distance to camera
+			render_call_vector.push_back(rc);
 			//node->mesh->renderBounding(node_model, true);
 		}
 	}
