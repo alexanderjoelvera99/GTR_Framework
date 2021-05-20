@@ -222,7 +222,7 @@ void Renderer::renderMesh(const Matrix44 model, Mesh* mesh, Camera* camera){
 //        glDisable(GL_BLEND);
 
     //chose a shader
-    shader = Shader::Get("simple");
+    shader = Shader::Get("mesh");
 
     assert(glGetError() == GL_NO_ERROR);
 
