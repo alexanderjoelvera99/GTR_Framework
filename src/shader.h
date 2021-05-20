@@ -22,11 +22,10 @@ class Texture;
 
 class Shader
 {
-	int last_slot;
-
 	static bool s_ready; //used to initialize shader vars
 
 public:
+    int last_slot;
 	static Shader* current;
 
 	Shader();

@@ -26,6 +26,10 @@ namespace GTR {
 		std::string shader_name;
 
 	public:
+        // The light number that is selected to control with light controls
+        int selected_light;
+        
+        
         Renderer(GTR::eMultipleLightRendering multiple_light_rendering, std::string shader_name);
         
 		// Change multiple light rendering type
@@ -62,7 +66,7 @@ namespace GTR {
         void viewDepthBuffer(LightEntity* light);
         
         // Render only the mesh for depth buffer texture
-        void renderMesh(const Matrix44 model, Mesh* mesh, Camera* camera);
+        void renderMesh(const Matrix44 model, Mesh* mesh, Camera* camera, eAlphaMode material_alpha_mode);
 
 		//to render one mesh given its material and transformation matrix
 		void renderMeshWithMaterial(const Matrix44 model, Mesh* mesh, GTR::Material* material, Camera* camera);

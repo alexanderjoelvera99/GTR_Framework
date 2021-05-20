@@ -248,7 +248,27 @@ uniform int u_light_type; // this is the light type: DIRECTIONAL=0, POINT=1, SPO
 uniform float u_max_distance; // max light distance
 uniform float u_cone_angle; // max cone angle of a spot light
 
+uniform mat4 u_shadow_viewproj;
+uniform float u_shadow_bias;
+uniform sampler2D u_shadowmap;
+
 vec3 light = vec3(0.0);
+
+float outsideoOfTheShadowmap(vec2 shadow_uv, float real_depth){
+    //for directional lights
+
+    //it is outside on the sides
+    if( shadow_uv.x < 0.0 || shadow_uv.x > 1.0 || shadow_uv.y < 0.0 || shadow_uv.y > 1.0 )
+        if( u_light_type == 1)
+            return 1.0;
+        else
+            return 0.0;
+
+    //it is before near or behind far plane
+    if(real_depth < 0.0 || real_depth > 1.0)
+        return 1.0;
+
+}
 
 void main()
 {
@@ -265,9 +285,38 @@ void main()
 	normal = normalize(normal);
 	vec3 N = texture2D(u_normal_texture, uv).xyz * normal;
 	N = normalize(N);
+ 
+    // Shadow map computations
+    //project our 3D position to the shadowmap
+    vec4 proj_pos = u_shadow_viewproj * vec4(v_world_position,1.0);
+
+    //from homogeneus space to clip space
+    vec2 shadow_uv = proj_pos.xy / proj_pos.w;
+
+    //from clip space to uv space
+    shadow_uv = shadow_uv * 0.5 + vec2(0.5);
+
+    //get point depth [-1 .. +1] in non-linear space
+    float real_depth = (proj_pos.z - u_shadow_bias) / proj_pos.w;
+
+    //normalize from [-1..+1] to [0..+1] still non-linear
+    real_depth = real_depth * 0.5 + 0.5;
+
+    //read depth from depth buffer in [0..+1] non-linear
+    float shadow_depth = texture2D( u_shadowmap, shadow_uv).x;
+
+    //compute final shadow factor by comparing
+    float shadow_factor = 1.0 * outsideoOfTheShadowmap(shadow_uv, real_depth);
+
+    //we can compare them, even if they are not linear
+    if( shadow_depth < real_depth ){
+        shadow_factor = 0.0;
+    }
+    
+    //End shadow maps computations
 
 	// Directional light
-	if(u_light_type == 0){
+	if(u_light_type == 0 && shadow_factor == 1.0){
 
 		//if the light is a directional light the light
 		//vector is the same for all pixels
@@ -314,20 +363,21 @@ void main()
 
 		if(light_to_point_distance < u_max_distance){
 			// Compute attenuation factor 
-			float att_factor = u_max_distance - light_to_point_distance;
+			float att_factor = clamp(u_max_distance - light_to_point_distance, 0.0, u_max_distance);
 
 			// Normalizing attenuation factor
 			att_factor /= u_max_distance;
 
 			// Ignoring negative values
-			att_factor = max(att_factor, 0.0);
+			//att_factor = max(att_factor, 0.0);
+            att_factor = pow(att_factor, 3.0);
 
 			// Adding the diffuse light
 			light += (NdotL * u_light_color) * att_factor;	
 		}
 	}
 	//Spot light 
-	else if(u_light_type == 2){
+	else if(u_light_type == 2 && shadow_factor == 1.0){
 		// Get the inverse light vector for each pixel
 		vec3 negative_L = v_world_position - u_light_position;
 
@@ -349,14 +399,15 @@ void main()
 		float light_to_point_distance = distance(u_light_position, v_world_position);
 
 		if(light_to_point_distance <= u_max_distance && angle_spotDirection_negativeL <= u_cone_angle){
-			// Compute attenuation factor 
-			float att_factor = u_max_distance - light_to_point_distance;
+			// Compute attenuation factor
+            float att_factor = clamp(u_max_distance - light_to_point_distance, 0.0, u_max_distance);
 
-			// Normalizing attenuation factor
-			att_factor /= u_max_distance;
+            // Normalizing attenuation factor
+            att_factor /= u_max_distance;
 
-			// Ignoring negative values
-			att_factor = max(att_factor, 0.0);
+            // Ignoring negative values
+            //att_factor = max(att_factor, 0.0);
+            att_factor = pow(att_factor, 3.0);
 
 			// Adding the diffuse light
 			light += ( spotDirectionDotNegativeL * u_light_color) * att_factor;

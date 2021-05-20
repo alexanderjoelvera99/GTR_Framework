@@ -20,7 +20,12 @@ void GTR::Scene::clear()
 		BaseEntity* ent = entities[i];
 		delete ent;
 	}
+    for (int i = 0; i < light_entities.size(); i++){
+        BaseEntity* ent = light_entities[i];
+        delete ent;
+    }
 	entities.resize(0);
+    light_entities.resize(0);
 }
 
 
@@ -190,6 +195,7 @@ GTR::LightEntity::LightEntity() : GTR::BaseEntity(){
 	this->camera = new Camera();
 	this->fbo = new FBO();
 	this->fbo->create(Application::instance->window_width, Application::instance->window_height);
+    this->shadow_bias = 0.0001;
 }
 
 GTR::LightEntity::~LightEntity(){}
@@ -210,16 +216,22 @@ void GTR::LightEntity::changeLightPosition(Vector3 delta){
 }
 
 void GTR::LightEntity::setUniforms(Shader* shader){
-	shader->setUniform("u_light_color", this->color);
+	// Light properties uniforms
+    shader->setUniform("u_light_color", this->color);
 	shader->setUniform("u_light_position",this->model.getTranslation());
 	shader->setUniform("u_light_type",this->light_type);
 	shader->setUniform("u_light_direction",this->model.frontVector());
 	shader->setUniform("u_max_distance",this->max_distance);
 	shader->setUniform("u_cone_angle",this->cone_angle);
-
+    
+    //Shadow map uniforms
+    shader->setUniform("u_shadow_viewproj", this->camera->viewprojection_matrix);
+    //shader->setUniform("u_shadow_camera_position", this->camera->eye);
+    shader->setTexture("u_shadowmap", this->fbo->depth_texture, 8);
+    shader->setUniform("u_shadow_bias", this->shadow_bias );
 }
 
-// Configuring especial json fields for Light entity
+// Configuring special json fields for Light entity
 void GTR::LightEntity::configure(cJSON* json)
 {
 	if (cJSON_GetObjectItem(json, "color"))
@@ -268,22 +280,33 @@ void GTR::LightEntity::configure(cJSON* json)
 		float cone_angle = readJSONNumber(json, "cone_angle", 0.0f);
         this->cone_angle = (cone_angle*PI)/180; 
 	}
-	int w = Application::instance->window_height;
-	int h = Application::instance->window_height;
-	// Setting perspective for the camera to use in Shadow maps
-	if(this->light_type == SPOT){
-		float cone_angle_degrees = (this->cone_angle*180)/PI;
-		float aspect = w/(float)h;
-		camera->setPerspective( cone_angle_degrees, aspect, 1.0f, this->max_distance);
-	}
-	else if(this->light_type == DIRECTIONAL){
-		camera->setOrthographic(w/2, w/2, h/2, h/2, 1, this->max_distance);
-	}
-	else if(this->light_type == POINT){
-		// De momento nada... Pero se puede applicar un cube map
-	}
-	// Set the camera look at
-	setCameraAsLight();
+    if (cJSON_GetObjectItem(json, "shadow_bias"))
+    {
+        this->shadow_bias = readJSONNumber(json, "shadow_bias", 0.0001f);
+    }
+    
+    setCameraLight();
+    
+}
+
+void GTR::LightEntity::setCameraLight(){
+    int w = Application::instance->window_height;
+    int h = Application::instance->window_height;
+    // Setting perspective for the camera to use in Shadow maps
+    if(this->light_type == SPOT){
+        float cone_angle_degrees = (this->cone_angle*180)/PI;
+        float aspect = w/(float)h;
+        camera->setPerspective( cone_angle_degrees, aspect, 1.0f, this->max_distance);
+    }
+    else if(this->light_type == DIRECTIONAL){
+        camera->setOrthographic(w/2, w/2, h/2, h/2, 1, this->max_distance);
+    }
+    else if(this->light_type == POINT){
+        // De momento nada... Pero se puede applicar un cube map
+    }
+    
+    // Set the camera look at
+    setCameraAsLight();
 }
 
 void GTR::LightEntity::setCameraAsLight(){

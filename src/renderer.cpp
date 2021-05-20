@@ -16,6 +16,7 @@ using namespace GTR;
 Renderer::Renderer(GTR::eMultipleLightRendering multiple_light_rendering, std::string shader_name){
 	this->multiple_light_rendering = multiple_light_rendering;
 	this->shader_name = shader_name;
+    this->selected_light = 0;
 }
 
 void Renderer::changeMultiLightRendering(){
@@ -130,8 +131,8 @@ void Renderer::renderScene(GTR::Scene* scene, Camera* camera)
     }
     
     // View the depth buffer of a light
-    //viewDepthBuffer(lights[0]);
-
+    viewDepthBuffer(lights[this->selected_light]);
+    
     //Clear rendercall for framebuffer
     clearRenderCall(& this->render_call_vector);
     // Clear rendercall for every light depth texture
@@ -207,14 +208,23 @@ void Renderer::collectNodesInRenderCall(const Matrix44& prefab_model, GTR::Node*
 
 void Renderer::renderToTexture(Camera* camera, FBO* fbo, std::vector<RenderCall*> rc_vector){
     fbo->bind();
-    // Clear the color and the depth buffer
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+   
+    //you can disable writing to the color buffer to speed up the rendering as we do not need it
+    glColorMask(false,false,false,false);
+
+    //clear the depth buffer only (don't care of color)
+    glClear( GL_DEPTH_BUFFER_BIT );
     checkGLErrors();
+
     
     for (int i = 0; i<rc_vector.size(); i++){
-        renderMesh(rc_vector[i]->model, rc_vector[i]->mesh, camera);
+        renderMesh(rc_vector[i]->model, rc_vector[i]->mesh, camera, rc_vector[i]->material->alpha_mode);
     }
     fbo->unbind();
+    
+    //allow to render back to the color buffer
+    glColorMask(true,true,true,true);
+
 }
 
 void Renderer::renderLightDepthBuffer(LightEntity* light, std::vector<RenderCall*> rc_vector){
@@ -241,7 +251,7 @@ void Renderer::viewDepthBuffer(LightEntity* light){
     glEnable(GL_DEPTH_TEST);
 }
 
-void Renderer::renderMesh(const Matrix44 model, Mesh* mesh, Camera* camera){
+void Renderer::renderMesh(const Matrix44 model, Mesh* mesh, Camera* camera, eAlphaMode material_alpha_mode){
     
     glDisable(GL_BLEND);
     //in case there is nothing to do
@@ -251,14 +261,13 @@ void Renderer::renderMesh(const Matrix44 model, Mesh* mesh, Camera* camera){
     
     Shader* shader = NULL;
     
-    //select the blending. DE momento sin blending
-//    if (material->alpha_mode == GTR::eAlphaMode::BLEND)
-//    {
-//        glEnable(GL_BLEND);
-//        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-//    }
-//    else
-//        glDisable(GL_BLEND);
+    // If blending, then we won't draw anything
+    if (material_alpha_mode == GTR::eAlphaMode::BLEND)
+    {
+        //glEnable(GL_BLEND);
+        //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        return;
+    }
 
     //chose a shader
     shader = Shader::Get("mesh");

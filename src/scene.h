@@ -68,7 +68,6 @@ namespace GTR {
 	class LightEntity : public GTR::BaseEntity
 	{
 	public:
-		static LightEntity* instance;
 		//Atributes
 		//...to define ...
 		Vector3 color;
@@ -80,6 +79,7 @@ namespace GTR {
 		float area_size;
 		Camera* camera; // For shadow maps
 		FBO* fbo;
+        float shadow_bias;
         std::vector<RenderCall*> rc; // render call for the fbo rendering
 		
 		//Constructor
@@ -92,6 +92,7 @@ namespace GTR {
 		void changeLightPosition(Vector3 delta);
 		void configure(cJSON* json);
 		void setUniforms(Shader* shader);
+        void setCameraLight();
 		void setCameraAsLight();
 	};
 

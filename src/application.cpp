@@ -27,8 +27,6 @@ FBO* fbo = nullptr;
 Texture* texture = nullptr;
 
 float cam_speed = 10;
-int selected_light;
-int number_of_lights;
 
 Application::Application(int window_width, int window_height, SDL_Window* window)
 {
@@ -71,18 +69,15 @@ Application::Application(int window_width, int window_height, SDL_Window* window
 	scene = new GTR::Scene();
 	if (!scene->load("data/scene.json"))
 		exit(1);
-    
-    // Light to control
-    // Chosen light to modify. PENDIENTE DE CAMBIAR YA QUE PODRÍA PETAR SI NO HAY NINGUNA LUZ
-    int chosen_light = 0;
-    selected_light_entity = scene->light_entities[chosen_light];
-    number_of_lights = (int)scene->light_entities.size();
 
 	camera->lookAt(scene->main_camera.eye, scene->main_camera.center, Vector3(0, 1, 0));
 	camera->fov = scene->main_camera.fov;
 
 	//This class will be the one in charge of rendering all 
 	renderer = new GTR::Renderer(GTR::NOMULTIPLELIGHT, "light"); //here so we have opengl ready in constructor
+    
+    // Light to control
+    selected_light_entity = scene->light_entities[renderer->selected_light];
 
 	//hide the cursor
 	SDL_ShowCursor(!mouse_locked); //hide or show the mouse
@@ -319,11 +314,16 @@ void Application::onKeyDown( SDL_KeyboardEvent event )
 			scene->load(scene->filename.c_str());
 			camera->lookAt(scene->main_camera.eye, scene->main_camera.center, Vector3(0, 1, 0));
 			camera->fov = scene->main_camera.fov;
+            // Light to control
+            selected_light_entity = scene->light_entities[renderer->selected_light];
 			break;
-        case SDLK_SPACE: // Change light to modify
-			selected_light = (selected_light + 1)%number_of_lights;
-        	selected_light_entity = scene->light_entities[selected_light];
+        case SDLK_SPACE:// Change light to modify
+        {
+            int num_lights = (int)scene->light_entities.size();
+			renderer->selected_light = (renderer->selected_light + 1) % num_lights;
+        	selected_light_entity = scene->light_entities[renderer->selected_light];
             break;
+        }
         case SDLK_0:
             renderer->changeMultiLightRendering();
             break;
