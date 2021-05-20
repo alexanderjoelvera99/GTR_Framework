@@ -456,7 +456,7 @@ void main()
 				att_factor = max(att_factor, 0.0);
 
 				// Adding the diffuse light
-				light += vec3(10)*(NdotL * u_light_color[i]) * att_factor;	
+				light += (NdotL * u_light_color[i]) * att_factor;	
 			}
 
 			//Point light

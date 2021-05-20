@@ -114,8 +114,8 @@ void Application::render(void)
 	glViewport(0, 0, window_width, window_height);
     renderer->renderScene(scene, camera);
     //Draw the floor grid, helpful to have a reference point
-    if(render_debug)
-        drawGrid();
+//    if(render_debug)
+//        drawGrid();
 
     glDisable(GL_DEPTH_TEST);
     //render anything in the gui after this

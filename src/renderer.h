@@ -32,7 +32,7 @@ namespace GTR {
 		void changeMultiLightRendering();
         
         // Multipass rendering function
-		void multipassRendering(std::vector<LightEntity*> lights, Shader* shader, Mesh* mesh);
+		void multipassRendering(std::vector<LightEntity*> lights, Shader* shader, Mesh* mesh, Material* material);
         
         //renders several elements of the scene
         void renderScene(GTR::Scene* scene, Camera* camera);

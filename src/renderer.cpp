@@ -86,7 +86,7 @@ void Renderer::clearRenderCall(std::vector<RenderCall*>* rc_vector){
 	rc_vector->clear();
 }
 
-void Renderer::multipassRendering(std::vector<LightEntity*> lights, Shader* shader, Mesh* mesh){
+void Renderer::multipassRendering(std::vector<LightEntity*> lights, Shader* shader, Mesh* mesh, Material* material){
 	int num_lights = (int)lights.size();
 	
 	//allow to render pixels that have the same depth as the one in the depth buffer
@@ -95,17 +95,22 @@ void Renderer::multipassRendering(std::vector<LightEntity*> lights, Shader* shad
 	//set blending mode to additive
 	//this will collide with materials with blend...
 	glBlendFunc( GL_SRC_ALPHA,GL_ONE );
-
+    
 	for(int i = 0; i < num_lights; ++i)
 	{
 		//first pass doesn't use blending
-        if(i == 0)
+        if(i == 0 )
             glDisable( GL_BLEND );
         
         else{
             glEnable( GL_BLEND );
             shader->setUniform("u_emissive_factor", Vector3(0,0,0));
             shader->setUniform("u_ambient_light", Vector3(0,0,0));
+        }
+        
+        if(material->alpha_mode == GTR::eAlphaMode::BLEND){
+            glEnable(GL_BLEND);
+            glBlendFunc(GL_ONE, GL_ONE);
         }
 
 		//pass the light data to the shader
@@ -353,7 +358,7 @@ void Renderer::renderMeshWithMaterial(const Matrix44 model, Mesh* mesh, GTR::Mat
 		mesh->render(GL_TRIANGLES);
 	}
     else if (multiple_light_rendering == MULTIPASS){
-        multipassRendering(light_entities, shader, mesh);
+        multipassRendering(light_entities, shader, mesh, material);
     }
     else {
         // Use only the first light
