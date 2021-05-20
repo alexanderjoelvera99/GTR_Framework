@@ -28,43 +28,43 @@ void Renderer::changeMultiLightRendering(){
 	}
 }
 
-void Renderer::renderToTexture(Scene* scene, Camera* camera, FBO* fbo){
+void Renderer::renderToTexture(Camera* camera, FBO* fbo, std::vector<RenderCall*> rc_vector){
 	fbo->bind();
-	renderScene(scene, camera);
+    // Clear the color and the depth buffer
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    checkGLErrors();
+    
+    for (int i = 0; i<rc_vector.size(); i++){
+        renderMesh(rc_vector[i]->model, rc_vector[i]->mesh, camera);
+    }
 	fbo->unbind();
 }
 
-void Renderer::renderLightDepthBuffer(Scene* scene, LightEntity* light){
-	FBO* fbo = light->fbo;
-	renderToTexture(scene, light->camera, fbo);
-    //remember to disable ztest if rendering quads!
-    glDisable(GL_DEPTH_TEST);
-
-	viewDepthBuffer(light);
+void Renderer::renderLightDepthBuffer(LightEntity* light, std::vector<RenderCall*> rc_vector){
+	renderToTexture(light->camera, light->fbo, rc_vector);
 }
 
 void Renderer::viewDepthBuffer(LightEntity* light){
+    //remember to disable ztest if rendering quads!
+    glDisable(GL_DEPTH_TEST);
 	FBO* fbo = light->fbo;
 	//to use a special shader
     Shader* zshader = Shader::Get("depth");
     zshader->enable();
     zshader->setUniform("u_camera_nearfar", Vector2(light->camera->near_plane, light->camera->far_plane));
     
+    // To render in a portion of the screen
     int w = Application::instance->window_width;
     int h = Application::instance->window_height;
     glViewport(0, 0, w*0.5, h*0.5);
     fbo->depth_texture->toViewport(zshader);
+    
     zshader->disable();
+    
+    glEnable(GL_DEPTH_TEST);
 }
 
-void Renderer::collectRenderCall(GTR::Scene* scene, Camera* camera){
-	//set the clear color (the background color)
-	glClearColor(scene->background_color.x, scene->background_color.y, scene->background_color.z, 1.0);
-
-	// Clear the color and the depth buffer
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	checkGLErrors();
-
+void Renderer::collectRenderCall(GTR::Scene* scene, Camera* camera, std::vector<RenderCall*>* rc_vector){
 	//render entities
 	for (int i = 0; i < scene->entities.size(); ++i)
 	{
@@ -77,13 +77,13 @@ void Renderer::collectRenderCall(GTR::Scene* scene, Camera* camera){
 		{
 			PrefabEntity* pent = (GTR::PrefabEntity*)ent;
 			if(pent->prefab)
-				collectPrefabInRenderCall(ent->model, pent->prefab, camera);
+				collectPrefabInRenderCall(ent->model, pent->prefab, camera, rc_vector);
 		}
 	}
 }
 
-void Renderer::clearRenderCall(){
-	this->render_call_vector.clear();
+void Renderer::clearRenderCall(std::vector<RenderCall*>* rc_vector){
+	rc_vector->clear();
 }
 
 void Renderer::multipassRendering(std::vector<LightEntity*> lights, Shader* shader, Mesh* mesh){
@@ -122,30 +122,57 @@ void Renderer::multipassRendering(std::vector<LightEntity*> lights, Shader* shad
 void Renderer::renderScene(GTR::Scene* scene, Camera* camera)
 {
 	// Collecting render calls
-	collectRenderCall(scene, camera);
-	// sorting by alpha
-	std::sort(render_call_vector.begin(), render_call_vector.end(), RenderCall::sorting_renderCalls);
+	collectRenderCall(scene, camera, &this->render_call_vector);
+    // sorting by alpha
+    std::sort(render_call_vector.begin(), render_call_vector.end(), RenderCall::sorting_renderCalls);
+    
+    // Render to depth buffer of every light to create Shadow Maps
+    std::vector<GTR::LightEntity*> lights = scene->light_entities;
+    
+    for (int i = 0; i < lights.size(); i++){
+        // Collecting render calls for every light
+        collectRenderCall(scene, lights[i]->camera, & lights[i]->rc);
+        // sorting by alpha
+        std::sort(lights[i]->rc.begin(), lights[i]->rc.end(), RenderCall::sorting_renderCalls);
+        
+        // Rendering the depth buffer to texture
+        renderLightDepthBuffer(lights[i], lights[i]->rc);
+    }
+    
+	// Rendering to framebuffer
+    //set the clear color (the background color)
+    glClearColor(scene->background_color.x, scene->background_color.y, scene->background_color.z, 1.0);
 
-	// Rendering
-	for (int i = 0; i < render_call_vector.size(); i++){
+    // Clear the color and the depth buffer
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    checkGLErrors();
+
+    for (int i = 0; i < render_call_vector.size(); i++){
 		renderMeshWithMaterial(render_call_vector[i]->model, render_call_vector[i]->mesh, render_call_vector[i]->material, camera);
 	}
+    
+    // View the depth buffer of a light
+    //viewDepthBuffer(lights[0]);
 
-	//Clear rendercall
-	clearRenderCall();
+	//Clear rendercall for framebuffer
+	clearRenderCall(& this->render_call_vector);
+    // Clear rendercall for every light depth texture
+    for (int i = 0; i < lights.size(); i++){
+        clearRenderCall(& lights[i]->rc);
+    }
 
 }
 
 //renders all the prefab
-void Renderer::collectPrefabInRenderCall(const Matrix44& model, GTR::Prefab* prefab, Camera* camera)
+void Renderer::collectPrefabInRenderCall(const Matrix44& model, GTR::Prefab* prefab, Camera* camera, std::vector<RenderCall*>* rc_vector)
 {
 	assert(prefab && "PREFAB IS NULL");
 	//assign the model to the root node
-	collectNodesInRenderCall(model, &prefab->root, camera);
+	collectNodesInRenderCall(model, &prefab->root, camera, rc_vector);
 }
 
 //renders a node of the prefab and its children
-void Renderer::collectNodesInRenderCall(const Matrix44& prefab_model, GTR::Node* node, Camera* camera)
+void Renderer::collectNodesInRenderCall(const Matrix44& prefab_model, GTR::Node* node, Camera* camera, std::vector<RenderCall*>* rc_vector)
 {
 	if (!node->visible)
 		return;
@@ -165,14 +192,55 @@ void Renderer::collectNodesInRenderCall(const Matrix44& prefab_model, GTR::Node*
 			//render node mesh
 			//renderMeshWithMaterial( node_model, node->mesh, node->material, camera );
 			RenderCall* rc = new RenderCall(&node_model, node->mesh, node->material, 10.0f); // De momento forzamos un mismo número de distance to camera
-			render_call_vector.push_back(rc);
+			rc_vector->push_back(rc);
 			//node->mesh->renderBounding(node_model, true);
 		}
 	}
 
 	//iterate recursively with children
 	for (int i = 0; i < node->children.size(); ++i)
-		collectNodesInRenderCall(prefab_model, node->children[i], camera);
+		collectNodesInRenderCall(prefab_model, node->children[i], camera, rc_vector);
+}
+
+void Renderer::renderMesh(const Matrix44 model, Mesh* mesh, Camera* camera){
+    
+    glDisable(GL_BLEND);
+    //in case there is nothing to do
+    if (!mesh || !mesh->getNumVertices())
+        return;
+    assert(glGetError() == GL_NO_ERROR);
+    
+    Shader* shader = NULL;
+    
+    //select the blending. DE momento sin blending
+//    if (material->alpha_mode == GTR::eAlphaMode::BLEND)
+//    {
+//        glEnable(GL_BLEND);
+//        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+//    }
+//    else
+//        glDisable(GL_BLEND);
+
+    //chose a shader
+    shader = Shader::Get("simple");
+
+    assert(glGetError() == GL_NO_ERROR);
+
+    //no shader? then nothing to render
+    if (!shader)
+        return;
+    shader->enable();
+    
+    //upload uniforms
+    shader->setUniform("u_viewprojection", camera->viewprojection_matrix);
+    shader->setUniform("u_camera_position", camera->eye);
+    shader->setUniform("u_model", model );
+    
+    mesh->render(GL_TRIANGLES);
+    
+    //disable shader
+    shader->disable();
+    
 }
 
 //renders a mesh given its transform and material

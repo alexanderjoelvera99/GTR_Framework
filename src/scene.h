@@ -7,6 +7,7 @@
 #include <string>
 #include "camera.h"
 #include "fbo.h"
+#include "renderCall.h"
 
 //forward declaration
 class cJSON; 
@@ -79,6 +80,7 @@ namespace GTR {
 		float area_size;
 		Camera* camera; // For shadow maps
 		FBO* fbo;
+        std::vector<RenderCall*> rc; // render call for the fbo rendering
 		
 		//Constructor
 		LightEntity();

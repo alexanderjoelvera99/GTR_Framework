@@ -6,6 +6,7 @@ phong_equation basic.vs phong.fs
 light basic.vs light.fs
 singlepass basic.vs singlepass.fs
 normal basic.vs normal.fs
+simple basic.vs simple.fs
 
 \basic.vs
 
@@ -537,4 +538,14 @@ void main()
 		discard;
 
 	gl_FragColor = color;
+}
+
+
+\simple.fs
+
+//uniform vec4 u_color;
+
+void main()
+{
+    gl_FragColor = vec4(1.0);
 }
