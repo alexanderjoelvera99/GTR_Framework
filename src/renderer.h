@@ -45,6 +45,12 @@ namespace GTR {
         
         // Clear render_call_vector
 		void clearRenderCall(std::vector<RenderCall*>* rc_vector);
+	
+		//to render a whole prefab (with all its nodes)
+		void collectPrefabInRenderCall(const Matrix44& model, GTR::Prefab* prefab, Camera* camera, std::vector<RenderCall*>* rc_vector);
+
+		//to render one node from the prefab and its children
+		void collectNodesInRenderCall(const Matrix44& model, GTR::Node* node, Camera* camera, std::vector<RenderCall*>* rc_vector);
         
         // Render to texture function
         void renderToTexture(Camera* camera, FBO* fbo, std::vector<RenderCall*> rc_vector);
@@ -54,12 +60,6 @@ namespace GTR {
 
         // View the depth buffer
         void viewDepthBuffer(LightEntity* light);
-	
-		//to render a whole prefab (with all its nodes)
-		void collectPrefabInRenderCall(const Matrix44& model, GTR::Prefab* prefab, Camera* camera, std::vector<RenderCall*>* rc_vector);
-
-		//to render one node from the prefab and its children
-		void collectNodesInRenderCall(const Matrix44& model, GTR::Node* node, Camera* camera, std::vector<RenderCall*>* rc_vector);
         
         // Render only the mesh for depth buffer texture
         void renderMesh(const Matrix44 model, Mesh* mesh, Camera* camera);
