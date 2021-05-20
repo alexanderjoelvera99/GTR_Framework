@@ -31,6 +31,9 @@ namespace GTR {
 		// Change multiple light rendering type
 		void changeMultiLightRendering();
         
+        // Singlepass rendering function
+        void singlepassRendering(std::vector<LightEntity*> light_entities, Shader* shader, Mesh* mesh);
+        
         // Multipass rendering function
 		void multipassRendering(std::vector<LightEntity*> lights, Shader* shader, Mesh* mesh, Material* material);
         

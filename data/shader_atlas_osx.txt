@@ -205,7 +205,6 @@ varying vec3 v_normal;
 varying vec2 v_uv;
 
 uniform sampler2D u_normal_texture;
-uniform bool u_has_normal_texture;
 
 
 void main()
