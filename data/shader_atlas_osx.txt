@@ -6,7 +6,7 @@ phong_equation basic.vs phong.fs
 light basic.vs light.fs
 singlepass basic.vs singlepass.fs
 normal basic.vs normal.fs
-simple basic.vs simple.fs
+mesh basic.vs mesh.fs
 
 \basic.vs
 
@@ -541,7 +541,7 @@ void main()
 }
 
 
-\simple.fs
+\mesh.fs
 
 //uniform vec4 u_color;
 
