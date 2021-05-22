@@ -208,11 +208,8 @@ void GTR::LightEntity::changeLightColor(Vector3 delta){
 }
 
 void GTR::LightEntity::changeLightPosition(Vector3 delta){
-	this->model.translateGlobal(delta[0], delta[1], delta[2]);
-    for (int i = 0; i < 3; i++){
-        delta[i] = -delta[i];
-    }
-	this->camera->moveGlobal(delta);
+    this->model.translate(delta[0], -delta[1], delta[2]);
+    this->camera->move(delta);
 }
 
 void GTR::LightEntity::setUniforms(Shader* shader){
@@ -223,6 +220,7 @@ void GTR::LightEntity::setUniforms(Shader* shader){
 	shader->setUniform("u_light_direction",this->model.frontVector());
 	shader->setUniform("u_max_distance",this->max_distance);
 	shader->setUniform("u_cone_angle",this->cone_angle);
+    shader->setUniform("u_intensity", this->intensity);
     
     //Shadow map uniforms
     shader->setUniform("u_shadow_viewproj", this->camera->viewprojection_matrix);
@@ -284,6 +282,10 @@ void GTR::LightEntity::configure(cJSON* json)
     {
         this->shadow_bias = readJSONNumber(json, "shadow_bias", 0.0001f);
     }
+    if (cJSON_GetObjectItem(json, "area_size"))
+    {
+        this->area_size = readJSONNumber(json, "area_size", 0);
+    }
     
     setCameraLight();
     
@@ -299,7 +301,7 @@ void GTR::LightEntity::setCameraLight(){
         camera->setPerspective( cone_angle_degrees, aspect, 1.0f, this->max_distance);
     }
     else if(this->light_type == DIRECTIONAL){
-        camera->setOrthographic(w/2, w/2, h/2, h/2, 1, this->max_distance);
+        camera->setOrthographic(-area_size/2, area_size/2, -area_size/2, area_size/2, -this->max_distance, this->max_distance);
     }
     else if(this->light_type == POINT){
         // De momento nada... Pero se puede applicar un cube map

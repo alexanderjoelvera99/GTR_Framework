@@ -245,7 +245,6 @@ uniform vec3 u_light_position; //position of the light
 uniform vec3 u_light_color; //color of the light
 uniform vec3 u_light_direction; //this is direction where a spot light points 
 uniform int u_light_type; // this is the light type: DIRECTIONAL=0, POINT=1, SPOT=2
-uniform float u_intensity;
 uniform float u_max_distance; // max light distance
 uniform float u_cone_angle; // max cone angle of a spot light
 
@@ -317,7 +316,7 @@ void main()
     //End shadow maps computations
 
 	// Directional light
-	if(u_light_type == 0){
+	if(u_light_type == 0 && shadow_factor == 1.0){
 
 		//if the light is a directional light the light
 		//vector is the same for all pixels
@@ -334,20 +333,16 @@ void main()
 		float light_to_point_distance = distance(u_light_position, v_world_position);
 
 		// Compute attenuation factor 
-		float att_factor = clamp(u_max_distance - light_to_point_distance, 0.0, u_max_distance);
+		float att_factor = u_max_distance - light_to_point_distance;
 
 		// Normalizing attenuation factor
 		att_factor /= u_max_distance;
 
 		// Ignoring negative values
-		//att_factor = max(att_factor, 0.0);
-        att_factor = pow(att_factor, 3.0);
+		att_factor = max(att_factor, 0.0);
 
 		// Adding the diffuse light
-        vec3 amount_of_light = (NdotL * u_light_color);
-        amount_of_light *= att_factor;
-        amount_of_light *= u_intensity;
-		light += amount_of_light * shadow_factor;
+		light += (NdotL * u_light_color) * att_factor;	
 	}
 
 	//Point light
@@ -375,17 +370,14 @@ void main()
 
 			// Ignoring negative values
 			//att_factor = max(att_factor, 0.0);
-            att_factor = pow(att_factor, 10.0);
+            att_factor = pow(att_factor, 3.0);
 
 			// Adding the diffuse light
-            vec3 amount_of_light = (NdotL * u_light_color);
-            amount_of_light *= att_factor;
-            amount_of_light *= u_intensity;
-			light += amount_of_light;
+			light += (NdotL * u_light_color) * att_factor;	
 		}
 	}
 	//Spot light 
-	else if(u_light_type == 2){
+	else if(u_light_type == 2 && shadow_factor == 1.0){
 		// Get the inverse light vector for each pixel
 		vec3 negative_L = v_world_position - u_light_position;
 
@@ -415,17 +407,13 @@ void main()
 
             // Ignoring negative values
             //att_factor = max(att_factor, 0.0);
-            att_factor = pow(att_factor, 10.0);
+            att_factor = pow(att_factor, 3.0);
 
 			// Adding the diffuse light
-            vec3 amount_of_light = ( spotDirectionDotNegativeL * u_light_color);
-            amount_of_light *= att_factor;
-            amount_of_light *= u_intensity;
-			light += amount_of_light * shadow_factor;
+			light += ( spotDirectionDotNegativeL * u_light_color) * att_factor;
 		}
 	}
- 
-    // Apply the light to the color
+	
 	color.xyz *= light;
 
 	//adding emissive_texture

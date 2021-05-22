@@ -264,6 +264,8 @@ void Renderer::renderMesh(const Matrix44 model, Mesh* mesh, Camera* camera, eAlp
     // If blending, then we won't draw anything
     if (material_alpha_mode == GTR::eAlphaMode::BLEND)
     {
+        //glEnable(GL_BLEND);
+        //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         return;
     }
 
