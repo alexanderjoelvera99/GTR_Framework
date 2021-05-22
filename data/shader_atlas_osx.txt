@@ -248,6 +248,7 @@ uniform int u_light_type; // this is the light type: DIRECTIONAL=0, POINT=1, SPO
 uniform float u_intensity;
 uniform float u_max_distance; // max light distance
 uniform float u_cone_angle; // max cone angle of a spot light
+uniform float u_cone_exp; // spot light exponent
 
 uniform mat4 u_shadow_viewproj;
 uniform float u_shadow_bias;
@@ -341,7 +342,7 @@ void main()
 
 		// Ignoring negative values
 		//att_factor = max(att_factor, 0.0);
-        att_factor = pow(att_factor, 3.0);
+        att_factor = pow(att_factor, 2.0);
 
 		// Adding the diffuse light
         vec3 amount_of_light = (NdotL * u_light_color);
@@ -375,7 +376,7 @@ void main()
 
 			// Ignoring negative values
 			//att_factor = max(att_factor, 0.0);
-            att_factor = pow(att_factor, 10.0);
+            att_factor = pow(att_factor, 2.0);
 
 			// Adding the diffuse light
             vec3 amount_of_light = (NdotL * u_light_color);
@@ -396,17 +397,19 @@ void main()
 
 		// Compute the dot product btw spot_direction and -L
 		float spotDirectionDotNegativeL = dot(spot_direction,negative_L);
+        // clamping the spotDirectionDotNegativeL since light can't be negative
+        spotDirectionDotNegativeL = clamp(spotDirectionDotNegativeL, 0.0, 1.0);
 
-		//computing the angle between spot_direction and -L
-		float angle_spotDirection_negativeL = acos(spotDirectionDotNegativeL);
-
-		// clamping the NdotL since light can't be negative
-		spotDirectionDotNegativeL = clamp(spotDirectionDotNegativeL, 0.0, 1.0);
+		//computing the cosine of the cutoff angle
+        float cosine_cone_angle = cos(u_cone_angle);
 
 		// Distance from the light to the object
 		float light_to_point_distance = distance(u_light_position, v_world_position);
 
-		if(light_to_point_distance <= u_max_distance && angle_spotDirection_negativeL <= u_cone_angle){
+		if(light_to_point_distance <= u_max_distance && spotDirectionDotNegativeL >= cosine_cone_angle){
+            // Compute the spot factor
+            float spotFactor = pow(spotDirectionDotNegativeL, u_cone_exp);
+  
 			// Compute attenuation factor
             float att_factor = clamp(u_max_distance - light_to_point_distance, 0.0, u_max_distance);
 
@@ -415,11 +418,11 @@ void main()
 
             // Ignoring negative values
             //att_factor = max(att_factor, 0.0);
-            att_factor = pow(att_factor, 10.0);
+            att_factor = pow(att_factor, 2.0);
 
 			// Adding the diffuse light
             vec3 amount_of_light = ( spotDirectionDotNegativeL * u_light_color);
-            amount_of_light *= att_factor;
+            amount_of_light *= att_factor * spotFactor;
             amount_of_light *= u_intensity;
 			light += amount_of_light * shadow_factor;
 		}

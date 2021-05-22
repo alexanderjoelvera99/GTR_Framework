@@ -76,6 +76,7 @@ namespace GTR {
 		Vector3 target;
 		float max_distance;
 		float cone_angle; // In degrees
+        float cone_exp;
 		float area_size;
 		Camera* camera; // For shadow maps
 		FBO* fbo;

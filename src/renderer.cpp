@@ -131,7 +131,7 @@ void Renderer::renderScene(GTR::Scene* scene, Camera* camera)
     }
     
     // View the depth buffer of a light
-    viewDepthBuffer(lights[this->selected_light]);
+    //viewDepthBuffer(lights[this->selected_light]);
     
     //Clear rendercall for framebuffer
     clearRenderCall(& this->render_call_vector);

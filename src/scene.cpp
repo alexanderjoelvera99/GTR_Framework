@@ -227,6 +227,7 @@ void GTR::LightEntity::setUniforms(Shader* shader){
     //shader->setUniform("u_shadow_camera_position", this->camera->eye);
     shader->setTexture("u_shadowmap", this->fbo->depth_texture, 8);
     shader->setUniform("u_shadow_bias", this->shadow_bias );
+    shader->setUniform("u_cone_exp", this->cone_exp);
 }
 
 // Configuring special json fields for Light entity
@@ -278,6 +279,10 @@ void GTR::LightEntity::configure(cJSON* json)
 		float cone_angle = readJSONNumber(json, "cone_angle", 0.0f);
         this->cone_angle = (cone_angle*PI)/180; 
 	}
+    if (cJSON_GetObjectItem(json, "cone_exp"))
+    {
+        this->cone_exp = readJSONNumber(json, "cone_exp", 0.0f);
+    }
     if (cJSON_GetObjectItem(json, "shadow_bias"))
     {
         this->shadow_bias = readJSONNumber(json, "shadow_bias", 0.0001f);
