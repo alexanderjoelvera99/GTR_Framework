@@ -72,6 +72,13 @@ Application::Application(int window_width, int window_height, SDL_Window* window
 
 	camera->lookAt(scene->main_camera.eye, scene->main_camera.center, Vector3(0, 1, 0));
 	camera->fov = scene->main_camera.fov;
+    
+    // TO debug orthographic camera
+//    camera->setOrthographic(-scene->light_entities[3]->area_size/2, scene->light_entities[3]->area_size/2, -scene->light_entities[3]->area_size/2, scene->light_entities[3]->area_size/2, -scene->light_entities[3]->max_distance/2, scene->light_entities[3]->max_distance);
+//    Vector3 light_position = scene->light_entities[3]->model.getTranslation();
+//    Vector3 light_front = scene->light_entities[3]->model.frontVector();
+//    camera->lookAt(light_position, light_position + light_front, Vector3(0.0f,1.0f,0.0f)); // We locate the camera as the light. Also, we apply the same front vector.
+
 
 	//This class will be the one in charge of rendering all 
 	renderer = new GTR::Renderer(GTR::NOMULTIPLELIGHT, "light"); //here so we have opengl ready in constructor
@@ -139,12 +146,12 @@ void Application::update(double seconds_elapsed)
     if (Input::isKeyPressed(SDL_SCANCODE_O)) selected_light_entity->changeLightColor(Vector3(0.0f, 0.0f, 0.01f) * speed);
 
 	// Controls for light position. These controls may be temporal
-	if (Input::isKeyPressed(SDL_SCANCODE_F)) selected_light_entity->changeLightPosition(Vector3(-3.0f * speed, 0.0f, 0.0f));
-	if (Input::isKeyPressed(SDL_SCANCODE_H)) selected_light_entity->changeLightPosition(Vector3(3.0f * speed, 0.0f , 0.0f));
-    if (Input::isKeyPressed(SDL_SCANCODE_Y)) selected_light_entity->changeLightPosition(Vector3(0.0f, -3.0f * speed,  0.0f));
-    if (Input::isKeyPressed(SDL_SCANCODE_R)) selected_light_entity->changeLightPosition(Vector3(0.0f, 3.0f * speed, 0.0f));
-    if (Input::isKeyPressed(SDL_SCANCODE_G)) selected_light_entity->changeLightPosition(Vector3(0.0f, 0.0f, -3.0f * speed));
-    if (Input::isKeyPressed(SDL_SCANCODE_T)) selected_light_entity->changeLightPosition(Vector3(0.0f, 0.0f, 3.0f * speed));
+	if (Input::isKeyPressed(SDL_SCANCODE_F)) selected_light_entity->changeLightPosition(Vector3(3.0f * speed, 0.0f, 0.0f)); // left
+	if (Input::isKeyPressed(SDL_SCANCODE_H)) selected_light_entity->changeLightPosition(Vector3(-3.0f * speed, 0.0f , 0.0f)); // right
+    if (Input::isKeyPressed(SDL_SCANCODE_R)) selected_light_entity->changeLightPosition(Vector3(0.0f, -3.0f * speed, 0.0f)); // up
+    if (Input::isKeyPressed(SDL_SCANCODE_Y)) selected_light_entity->changeLightPosition(Vector3(0.0f, 3.0f * speed,  0.0f)); // down
+    if (Input::isKeyPressed(SDL_SCANCODE_T)) selected_light_entity->changeLightPosition(Vector3(0.0f, 0.0f, 3.0f * speed)); // forward
+    if (Input::isKeyPressed(SDL_SCANCODE_G)) selected_light_entity->changeLightPosition(Vector3(0.0f, 0.0f, -3.0f * speed)); // back
 
 	//mouse input to rotate the cam
 	#ifndef SKIP_IMGUI
