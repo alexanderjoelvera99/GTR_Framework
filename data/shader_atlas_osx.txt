@@ -245,10 +245,10 @@ uniform vec3 u_light_position; //position of the light
 uniform vec3 u_light_color; //color of the light
 uniform vec3 u_light_direction; //this is direction where a spot light points 
 uniform int u_light_type; // this is the light type: DIRECTIONAL=0, POINT=1, SPOT=2
-uniform float u_intensity;
-uniform float u_max_distance; // max light distance
-uniform float u_cone_angle; // max cone angle of a spot light
-uniform float u_cone_exp; // spot light exponent
+uniform float u_light_intensity;
+uniform float u_light_maxdistance; // max light distance
+uniform float u_light_spotCosineCutoff; // cosine of the max cone angle of a spot light
+uniform float u_light_spotExponent; // spot light exponent
 
 uniform mat4 u_shadow_viewproj;
 uniform float u_shadow_bias;
@@ -335,10 +335,10 @@ void main()
 		float light_to_point_distance = distance(u_light_position, v_world_position);
 
 		// Compute attenuation factor 
-		float att_factor = clamp(u_max_distance - light_to_point_distance, 0.0, u_max_distance);
+		float att_factor = clamp(u_light_maxdistance - light_to_point_distance, 0.0, u_light_maxdistance);
 
 		// Normalizing attenuation factor
-		att_factor /= u_max_distance;
+		att_factor /= u_light_maxdistance;
 
 		// Ignoring negative values
 		//att_factor = max(att_factor, 0.0);
@@ -347,7 +347,7 @@ void main()
 		// Adding the diffuse light
         vec3 amount_of_light = (NdotL * u_light_color);
         amount_of_light *= att_factor;
-        amount_of_light *= u_intensity;
+        amount_of_light *= u_light_intensity;
 		light += amount_of_light * shadow_factor;
 	}
 
@@ -367,12 +367,12 @@ void main()
 		// Distance from the light to the object
 		float light_to_point_distance = distance(u_light_position, v_world_position);
 
-		if(light_to_point_distance < u_max_distance){
+		if(light_to_point_distance < u_light_maxdistance){
 			// Compute attenuation factor 
-			float att_factor = clamp(u_max_distance - light_to_point_distance, 0.0, u_max_distance);
+			float att_factor = clamp(u_light_maxdistance - light_to_point_distance, 0.0, u_light_maxdistance);
 
 			// Normalizing attenuation factor
-			att_factor /= u_max_distance;
+			att_factor /= u_light_maxdistance;
 
 			// Ignoring negative values
 			//att_factor = max(att_factor, 0.0);
@@ -381,7 +381,7 @@ void main()
 			// Adding the diffuse light
             vec3 amount_of_light = (NdotL * u_light_color);
             amount_of_light *= att_factor;
-            amount_of_light *= u_intensity;
+            amount_of_light *= u_light_intensity;
 			light += amount_of_light;
 		}
 	}
@@ -400,21 +400,18 @@ void main()
         // clamping the spotDirectionDotNegativeL since light can't be negative
         spotDirectionDotNegativeL = clamp(spotDirectionDotNegativeL, 0.0, 1.0);
 
-		//computing the cosine of the cutoff angle
-        float cosine_cone_angle = cos(u_cone_angle);
-
 		// Distance from the light to the object
 		float light_to_point_distance = distance(u_light_position, v_world_position);
 
-		if(light_to_point_distance <= u_max_distance && spotDirectionDotNegativeL >= cosine_cone_angle){
+		if(light_to_point_distance <= u_light_maxdistance && spotDirectionDotNegativeL >= u_light_spotCosineCutoff){
             // Compute the spot factor
-            float spotFactor = pow(spotDirectionDotNegativeL, u_cone_exp);
+            float spotFactor = pow(spotDirectionDotNegativeL, u_light_spotExponent);
   
 			// Compute attenuation factor
-            float att_factor = clamp(u_max_distance - light_to_point_distance, 0.0, u_max_distance);
+            float att_factor = clamp(u_light_maxdistance - light_to_point_distance, 0.0, u_light_maxdistance);
 
             // Normalizing attenuation factor
-            att_factor /= u_max_distance;
+            att_factor /= u_light_maxdistance;
 
             // Ignoring negative values
             //att_factor = max(att_factor, 0.0);
@@ -423,7 +420,7 @@ void main()
 			// Adding the diffuse light
             vec3 amount_of_light = ( spotDirectionDotNegativeL * u_light_color);
             amount_of_light *= att_factor * spotFactor;
-            amount_of_light *= u_intensity;
+            amount_of_light *= u_light_intensity;
 			light += amount_of_light * shadow_factor;
 		}
 	}

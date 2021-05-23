@@ -188,13 +188,18 @@ void GTR::PrefabEntity::renderInMenu()
 GTR::LightEntity::LightEntity() : GTR::BaseEntity(){
 	entity_type = LIGHT;
 	// default values
-	this->color = Vector3(0.0f, 0.0f, 0.0f);
-	this->light_type = DIRECTIONAL;
+    this->light_type = DIRECTIONAL;
+    this->color.set(1, 1, 1);
 	this->max_distance = 0;
 	this->cone_angle = 0;
+    this->area_size = 0;
+    this->cone_exp = 0;
+    this->cone_angle = 0;
+    
 	this->camera = new Camera();
 	this->fbo = new FBO();
 	this->fbo->create(Application::instance->window_width, Application::instance->window_height);
+    
     this->shadow_bias = 0.0001;
 }
 
@@ -218,16 +223,17 @@ void GTR::LightEntity::setUniforms(Shader* shader){
 	shader->setUniform("u_light_position",this->model.getTranslation());
 	shader->setUniform("u_light_type",this->light_type);
 	shader->setUniform("u_light_direction",this->model.frontVector());
-	shader->setUniform("u_max_distance",this->max_distance);
-	shader->setUniform("u_cone_angle",this->cone_angle);
-    shader->setUniform("u_intensity", this->intensity);
+	shader->setUniform("u_light_maxdistance",this->max_distance); //u_max_distance
+	shader->setUniform("u_light_spotCosineCutoff",cosf(this->cone_angle));
+    shader->setUniform("u_light_spotExponent", this->cone_exp);//u_cone_exp
+    shader->setUniform("u_light_intensity", this->intensity);//u_intensity
+    shader->setUniform("u_light_area_size", this->area_size );
     
     //Shadow map uniforms
     shader->setUniform("u_shadow_viewproj", this->camera->viewprojection_matrix);
     //shader->setUniform("u_shadow_camera_position", this->camera->eye);
     shader->setTexture("u_shadowmap", this->fbo->depth_texture, 8);
     shader->setUniform("u_shadow_bias", this->shadow_bias );
-    shader->setUniform("u_cone_exp", this->cone_exp);
 }
 
 // Configuring special json fields for Light entity
@@ -235,49 +241,35 @@ void GTR::LightEntity::configure(cJSON* json)
 {
 	if (cJSON_GetObjectItem(json, "color"))
 	{
-		Vector3 light_color = readJSONVector3(json, "color", Vector3(0, 0, 0));
-		this->color = light_color;
+		this->color = readJSONVector3(json, "color", Vector3(0, 0, 0));
 	}
 	if (cJSON_GetObjectItem(json, "intensity"))
 	{
-		float intensity = readJSONNumber(json, "intensity", 0.0f);
-		this->intensity = intensity;
+		this->intensity = readJSONNumber(json, "intensity", 0.0f);
 	}
 	if (cJSON_GetObjectItem(json, "light_type"))
 	{
-		std::string light_type_str = cJSON_GetObjectItem(json, "light_type")->valuestring;
-		
-		if(light_type_str.compare("POINT") == 0){
-			this->light_type = POINT;
-		}
-		else if (light_type_str.compare("SPOT") == 0){
-			this->light_type = SPOT;
-		}
-        else if (light_type_str.compare("DIRECTIONAL") == 0){
+		std::string lightType = cJSON_GetObjectItem(json, "light_type")->valuestring;
+        if (lightType == "POINT") {
+            this->light_type = POINT;
+        }
+        if (lightType == "DIRECTIONAL") {
             this->light_type = DIRECTIONAL;
         }
+        if (lightType == "SPOT") {
+            this->light_type = SPOT;
+        }
         else {
-            std::cout << "ERROR: Light type " << light_type_str << " not supported " << std::endl;
+            std::cout << "ERROR: Light type " << lightType << " not supported " << std::endl;
         }
 	}
-
-	if (cJSON_GetObjectItem(json, "target"))
-		{
-			Vector3 target = readJSONVector3(json, "target", Vector3(0,0,0));
-            Vector3 light_position = this->model.getTranslation();
-            Vector3 front_vector = target - light_position;
-			this->model.setFrontAndOrthonormalize(front_vector);
-		}
-
 	if (cJSON_GetObjectItem(json, "max_dist"))
 	{
-		float max_distance = readJSONNumber(json, "max_dist", 0.0f);
-		this->max_distance = max_distance;
+		this->max_distance = readJSONNumber(json, "max_dist", 0.0f);
 	}
 	if (cJSON_GetObjectItem(json, "cone_angle"))
 	{
-		float cone_angle = readJSONNumber(json, "cone_angle", 0.0f);
-        this->cone_angle = (cone_angle*PI)/180; 
+		this->cone_angle = readJSONNumber(json, "cone_angle", 0.0f);
 	}
     if (cJSON_GetObjectItem(json, "cone_exp"))
     {
@@ -301,7 +293,7 @@ void GTR::LightEntity::setCameraLight(){
     int h = Application::instance->window_height;
     // Setting perspective for the camera to use in Shadow maps
     if(this->light_type == SPOT){
-        float cone_angle_degrees = (this->cone_angle*180)/PI;
+        float cone_angle_degrees = this->cone_angle/DEG2RAD;
         float aspect = w/(float)h;
         camera->setPerspective( cone_angle_degrees, aspect, 1.0f, this->max_distance);
     }
@@ -320,4 +312,32 @@ void GTR::LightEntity::setCameraAsLight(){
 	Vector3 light_position = this->model.getTranslation();
 	Vector3 light_front = this->model.frontVector();
 	camera->lookAt(light_position, light_position + light_front, Vector3(0.0f,1.0f,0.0f)); // We locate the camera as the light. Also, we apply the same front vector.
+}
+
+void GTR::LightEntity::renderInMenu()
+{
+    BaseEntity::renderInMenu();
+
+    #ifndef SKIP_IMGUI
+        
+        ImGui::ColorEdit3("Light Color", color.v);
+
+        if (this->light_type == DIRECTIONAL) {
+            ImGui::SliderFloat("Intensity", &this->intensity, 0, 20);
+            ImGui::SliderFloat("Area size", &this->area_size, 0, 250);
+        }
+
+        if (this->light_type == POINT) {
+            ImGui::SliderFloat("Max dist", &this->max_distance, 0, 1000);
+            ImGui::SliderFloat("Intensity", &this->intensity, 0, 20);
+        }
+
+        if (this->light_type == SPOT) {
+            ImGui::SliderFloat("Max dist", &this->max_distance, 0, 1000);
+            ImGui::SliderFloat("Intensity", &this->intensity, 0, 20);
+            ImGui::SliderFloat("Cone angle", &this->cone_angle, 0, 100);
+            ImGui::SliderFloat("Spot exp", &this->cone_exp, 0, 30);
+        }
+        
+    #endif
 }
