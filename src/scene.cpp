@@ -253,10 +253,10 @@ void GTR::LightEntity::configure(cJSON* json)
         if (lightType == "POINT") {
             this->light_type = POINT;
         }
-        if (lightType == "DIRECTIONAL") {
+        else if (lightType == "DIRECTIONAL") {
             this->light_type = DIRECTIONAL;
         }
-        if (lightType == "SPOT") {
+        else if (lightType == "SPOT") {
             this->light_type = SPOT;
         }
         else {
