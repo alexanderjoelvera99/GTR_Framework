@@ -75,7 +75,6 @@ namespace GTR {
 		Vector3 color;
 		float intensity;
 		eLightType light_type;
-		Vector3 target;
 		float max_distance;
 		float cone_angle; // In degrees
         float cone_exp;
@@ -97,6 +96,7 @@ namespace GTR {
 		void setUniforms(Shader* shader);
         void setCameraLight();
 		void setCameraAsLight();
+        virtual void renderInMenu();
 	};
 
 	//contains all entities of the scene
