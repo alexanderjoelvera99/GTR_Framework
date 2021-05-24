@@ -43,10 +43,10 @@ namespace GTR {
         //ctor
         RenderCall()
         {
-            this->model = NULL;
-            this->mesh = NULL;
-            this->material = NULL;
-            this->distance_to_camera = NULL;
+//            this->model = NULL;
+//            this->mesh = NULL;
+//            this->material = NULL;
+//            this->distance_to_camera = NULL;
         }
 
         //~RenderCall(); 

@@ -192,7 +192,7 @@ GTR::LightEntity::LightEntity() : GTR::BaseEntity(){
 	this->light_type = DIRECTIONAL;
 	this->max_distance = 0;
 	this->cone_angle = 0;
-	this->camera = new Camera();
+	this->camera_light = new Camera();
 	this->fbo = new FBO();
 	this->fbo->create(Application::instance->window_width, Application::instance->window_height);
     this->shadow_bias = 0.0001;
@@ -209,7 +209,7 @@ void GTR::LightEntity::changeLightColor(Vector3 delta){
 
 void GTR::LightEntity::changeLightPosition(Vector3 delta){
     this->model.translate(delta[0], -delta[1], delta[2]);
-    this->camera->move(delta);
+    this->camera_light->move(delta);
 }
 
 void GTR::LightEntity::setUniforms(Shader* shader){
@@ -223,7 +223,7 @@ void GTR::LightEntity::setUniforms(Shader* shader){
     shader->setUniform("u_intensity", this->intensity);
     
     //Shadow map uniforms
-    shader->setUniform("u_shadow_viewproj", this->camera->viewprojection_matrix);
+    shader->setUniform("u_shadow_viewproj", this->camera_light->viewprojection_matrix);
     //shader->setUniform("u_shadow_camera_position", this->camera->eye);
     shader->setTexture("u_shadowmap", this->fbo->depth_texture, 8);
     shader->setUniform("u_shadow_bias", this->shadow_bias );
@@ -303,10 +303,10 @@ void GTR::LightEntity::setCameraLight(){
     if(this->light_type == SPOT){
         float cone_angle_degrees = (this->cone_angle*180)/PI;
         float aspect = w/(float)h;
-        camera->setPerspective( cone_angle_degrees, aspect, 1.0f, this->max_distance);
+        camera_light->setPerspective( cone_angle_degrees, aspect, 1.0f, this->max_distance);
     }
     else if(this->light_type == DIRECTIONAL){
-        camera->setOrthographic(-area_size/2, area_size/2, -area_size/2, area_size/2, -this->max_distance, this->max_distance);
+        camera_light->setOrthographic(-area_size/2, area_size/2, -area_size/2, area_size/2, -this->max_distance, this->max_distance);
     }
     else if(this->light_type == POINT){
         // De momento nada... Pero se puede applicar un cube map
@@ -319,5 +319,5 @@ void GTR::LightEntity::setCameraLight(){
 void GTR::LightEntity::setCameraAsLight(){
 	Vector3 light_position = this->model.getTranslation();
 	Vector3 light_front = this->model.frontVector();
-	camera->lookAt(light_position, light_position + light_front, Vector3(0.0f,1.0f,0.0f)); // We locate the camera as the light. Also, we apply the same front vector.
+	camera_light->lookAt(light_position, light_position + light_front, Vector3(0.0f,1.0f,0.0f)); // We locate the camera as the light. Also, we apply the same front vector.
 }
