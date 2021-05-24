@@ -50,7 +50,7 @@ void Renderer::renderScene(GTR::Scene* scene, Camera* camera)
     else if (pipeline_mode == DEFERRED)
         renderDeferred(scene, this->render_call_vector, camera);
 
-    /*
+    
     // Render to depth buffer of every light to create Shadow Maps
     std::vector<GTR::LightEntity*> lights = scene->light_entities;
     
@@ -60,7 +60,7 @@ void Renderer::renderScene(GTR::Scene* scene, Camera* camera)
         
         // Rendering the depth buffer to texture
         renderLightDepthBuffer(lights[i], lights[i]->rc);
-    }*/
+    }
         
     // View the depth buffer of a light
     //viewDepthBuffer(lights[this->selected_light]);

@@ -7,7 +7,7 @@
 #include <string>
 
 #include "fbo.h"
-//#include "renderer.h"
+#include "renderCall.h"
 
 
 
@@ -82,7 +82,7 @@ namespace GTR {
 		Camera* camera_light; // For shadow maps
 		FBO* fbo;
         float shadow_bias;
-        //std::vector< RenderCall > rc; // render call for the fbo rendering
+        std::vector< RenderCall > rc; // render call for the fbo rendering
 		
 		//Constructor
 		LightEntity();
