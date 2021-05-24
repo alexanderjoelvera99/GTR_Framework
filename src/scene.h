@@ -5,9 +5,11 @@
 #include "shader.h"
 #include "camera.h"
 #include <string>
-#include "camera.h"
+
 #include "fbo.h"
-#include "renderCall.h"
+#include "renderer.h"
+
+
 
 //forward declaration
 class cJSON; 
@@ -78,10 +80,10 @@ namespace GTR {
 		float cone_angle; // In degrees
         float cone_exp;
 		float area_size;
-		Camera* camera; // For shadow maps
+		Camera* camera_light; // For shadow maps
 		FBO* fbo;
         float shadow_bias;
-        std::vector<RenderCall*> rc; // render call for the fbo rendering
+        //std::vector< RenderCall > rc; // render call for the fbo rendering
 		
 		//Constructor
 		LightEntity();

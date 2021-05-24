@@ -10,6 +10,7 @@
 #include "scene.h"
 #include "extra/hdre.h"
 #include "application.h"
+#include <algorithm>
 
 
 using namespace GTR;
@@ -17,134 +18,68 @@ Renderer::Renderer(GTR::eMultipleLightRendering multiple_light_rendering, std::s
 	this->multiple_light_rendering = multiple_light_rendering;
 	this->shader_name = shader_name;
     this->selected_light = 0;
+    this->pipeline_mode = ePipelineMode::FORWARD;
+    this->render_mode = eRenderMode::MULTI; // cambiar...
+    this->show_gbuffers = false;
 }
 
-void Renderer::changeMultiLightRendering(){
-	this->multiple_light_rendering = static_cast<GTR::eMultipleLightRendering>((this->multiple_light_rendering + 1) % 3);
-	if(multiple_light_rendering == SINGLEPASS){
-		shader_name = "singlepass";
-	}
-	else if(multiple_light_rendering == MULTIPASS || multiple_light_rendering == NOMULTIPLELIGHT){
-		shader_name = "light";
-	}
-}
+struct sortRC {
+    inline bool operator()(RenderCall& a, RenderCall& b) const {
 
-void Renderer::singlepassRendering(std::vector<LightEntity*> light_entities, Shader* shader, Mesh* mesh)
-{
-    int number_of_lights = (int)light_entities.size();
-    Vector3 light_color[5];
-    Vector3 light_position[5];
-    eLightType light_type[5];
-    Vector3 target[5];
-    float max_distance[5];
-    float cone_angle[5];
+        //sort the rc through distance more to less if the material is the type BLEND
+        if ((a.material->alpha_mode == GTR::eAlphaMode::BLEND) && (b.material->alpha_mode == GTR::eAlphaMode::BLEND))
+            return a.distance_to_camera > b.distance_to_camera;
+        //if the material is the type OPAQUE OR OTHERS, we sort it less to more
+        else if ((a.material->alpha_mode != GTR::eAlphaMode::BLEND) && (b.material->alpha_mode != GTR::eAlphaMode::BLEND))
+            return a.distance_to_camera < b.distance_to_camera;
+        //if don't comply above conditions, we still sort it by the type of the material. If is type BLEND, sort it at the end 
+        return a.material->alpha_mode < b.material->alpha_mode;
 
-    for (int i = 0; i < number_of_lights; i++){
-        GTR::LightEntity* light = light_entities[i];
-        
-        light_color[i] = light->color;
-        light_position[i] = light->model.getTranslation();
-        light_type[i] = light->light_type;
-        target[i] = light->model.frontVector();;
-        max_distance[i] = light->max_distance;
-        cone_angle[i] = light->cone_angle;
     }
-    shader->setUniform3Array("u_light_color",(float*)&light_color, number_of_lights);
-    shader->setUniform3Array("u_light_position",(float*)&light_position, number_of_lights);
-    shader->setUniform1Array("u_light_type",(int*)&light_type, number_of_lights);
-    shader->setUniform3Array("u_light_direction",(float*)&target, number_of_lights);
-    shader->setUniform1Array("u_max_distance",(float*)&max_distance, number_of_lights);
-    shader->setUniform1Array("u_cone_angle",(float*)&cone_angle, number_of_lights);
-    shader->setUniform1("u_num_lights", number_of_lights);
-
-    //do the draw call that renders the mesh into the screen
-    mesh->render(GL_TRIANGLES);
-}
-void Renderer::multipassRendering(std::vector<LightEntity*> lights, Shader* shader, Mesh* mesh, Material* material){
-    int num_lights = (int)lights.size();
-    
-    //allow to render pixels that have the same depth as the one in the depth buffer
-    glDepthFunc( GL_LEQUAL );
-
-    //set blending mode to additive
-    //this will collide with materials with blend...
-    glBlendFunc( GL_SRC_ALPHA,GL_ONE );
-    
-    for(int i = 0; i < num_lights; ++i)
-    {
-        //first pass doesn't use blending
-        if(i == 0 )
-            glDisable( GL_BLEND );
-        
-        else{
-            glEnable( GL_BLEND );
-            shader->setUniform("u_emissive_factor", Vector3(0,0,0));
-            shader->setUniform("u_ambient_light", Vector3(0,0,0));
-        }
-        
-        if(material->alpha_mode == GTR::eAlphaMode::BLEND){
-            glEnable(GL_BLEND);
-            glBlendFunc(GL_ONE, GL_ONE);
-        }
-
-        //pass the light data to the shader
-        lights[i]->setUniforms( shader );
-
-        //render the mesh
-        mesh->render(GL_TRIANGLES);
-    }
-
-    glDisable( GL_BLEND );
-    glDepthFunc( GL_LESS ); //as default
-}
+};
 
 void Renderer::renderScene(GTR::Scene* scene, Camera* camera)
 {
     // Collecting render calls
-    collectRenderCall(scene, camera, &this->render_call_vector);
+    collectRenderCall(scene, camera, this->render_call_vector);
     // sorting by alpha
-    std::sort(render_call_vector.begin(), render_call_vector.end(), RenderCall::sorting_renderCalls);
+    std::sort(render_call_vector.begin(), render_call_vector.end(), sortRC());
     
+    if (pipeline_mode == FORWARD)
+        renderForward(scene, this->render_call_vector, camera);
+    else if (pipeline_mode == DEFERRED)
+        renderDeferred(scene, this->render_call_vector, camera);
+
+    /*
     // Render to depth buffer of every light to create Shadow Maps
     std::vector<GTR::LightEntity*> lights = scene->light_entities;
     
     for (int i = 0; i < lights.size(); i++){
         // Collecting render calls for every light
-        collectRenderCall(scene, lights[i]->camera, & lights[i]->rc);
-        // sorting by alpha
-        std::sort(lights[i]->rc.begin(), lights[i]->rc.end(), RenderCall::sorting_renderCalls);
+        collectRenderCall(scene, lights[i]->camera_light, lights[i]->rc);
         
         // Rendering the depth buffer to texture
         renderLightDepthBuffer(lights[i], lights[i]->rc);
-    }
-    
-    // Rendering to framebuffer
-    //set the clear color (the background color)
-    glClearColor(scene->background_color.x, scene->background_color.y, scene->background_color.z, 1.0);
-
-    // Clear the color and the depth buffer
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    checkGLErrors();
-
-    for (int i = 0; i < render_call_vector.size(); i++){
-        renderMeshWithMaterial(render_call_vector[i]->model, render_call_vector[i]->mesh, render_call_vector[i]->material, camera);
-    }
-    
+    }*/
+        
     // View the depth buffer of a light
     //viewDepthBuffer(lights[this->selected_light]);
     
     //Clear rendercall for framebuffer
-    clearRenderCall(& this->render_call_vector);
+    //clearRenderCall(& this->render_call_vector);
     // Clear rendercall for every light depth texture
-    for (int i = 0; i < lights.size(); i++){
+    /*for (int i = 0; i < lights.size(); i++){
         clearRenderCall(& lights[i]->rc);
     }
-
+    */
 }
 
+void Renderer::collectRenderCall(GTR::Scene* scene, Camera* camera, std::vector<RenderCall>& rc){ // std::vector<RenderCall*>* rc_vector
+    
+    //clear rendercall_vector
+    rc.resize(0); 
 
-void Renderer::collectRenderCall(GTR::Scene* scene, Camera* camera, std::vector<RenderCall*>* rc_vector){
-	//render entities
+    //render entities                                                     
 	for (int i = 0; i < scene->entities.size(); ++i)
 	{
 		BaseEntity* ent = scene->entities[i];
@@ -156,8 +91,10 @@ void Renderer::collectRenderCall(GTR::Scene* scene, Camera* camera, std::vector<
 		{
 			PrefabEntity* pent = (GTR::PrefabEntity*)ent;
 			if(pent->prefab)
-				collectPrefabInRenderCall(ent->model, pent->prefab, camera, rc_vector);
+				collectPrefabInRenderCall(ent->model, pent->prefab, camera, rc); //rc_vector
 		}
+
+
 	}
 }
 
@@ -166,17 +103,184 @@ void Renderer::clearRenderCall(std::vector<RenderCall*>* rc_vector){
 }
 
 
+void GTR::Renderer::renderForward(GTR::Scene* scene, std::vector <RenderCall>& rendercalls, Camera* camera)
+{
+
+    //set the clear color (the background color)
+    glClearColor(scene->background_color.x, scene->background_color.y, scene->background_color.z, 1.0);
+    // Clear the color and the depth buffer
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    checkGLErrors();
+
+    //render RenderCalls through reference 
+    for (int i = 0; i < rendercalls.size(); i++)
+    {
+        RenderCall& rc = rendercalls[i];
+        renderMeshWithMaterial(this->render_mode, rc.model, rc.mesh, rc.material, camera);
+    }
+
+}
+
+
+void GTR::Renderer::renderDeferred(GTR::Scene* scene, std::vector <RenderCall>& rendercalls, Camera* camera)
+{
+
+    if (gbuffers_fbo.fbo_id == 0) { //this att tell me if it is already created (by default is 0). Memory is reserved?
+
+        //we reserve memory to each textures...
+        gbuffers_fbo.create(Application::instance->window_height,
+            Application::instance->window_width,
+            3, // num of textures to create
+            GL_RGBA, // four channels
+            GL_UNSIGNED_BYTE, //1byte
+            true); //add depth_texture
+    }
+    //start rendeing inside the gbuffers
+    gbuffers_fbo.bind();
+
+    // if we want to clear all in once
+    glClearColor(0, 0, 0, 0);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    checkGLErrors();
+
+
+
+    /* //if clear each GB independently
+    //Now we clear in several passes, so we can control the clear color independently for every gbuffer
+    //disable all but the GB0 (and the depth)
+    gbuffers_fbo.enableSingleBuffer(0);
+
+    //clear the 1º GB with the color (and depth)
+    glClearColor( 0.1 , 0.1 , 0.1 , 1.0);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    checkGLErrors();
+
+    //now enable the 2º GB and clear. This time we haven't clear the GL_COLOR
+    gbuffers_fbo.enableSingleBuffer(1);
+    glClearColor( 0, 0, 0, 1.0);
+    glClear(GL_DEPTH_BUFFER_BIT);
+    checkGLErrors();
+
+    // clear 3º GB
+
+    // clear 4º GB
+
+    //enable all buffers back
+    gbuffers_fbo.enableAllBuffers();
+
+
+    */
+
+
+    //render all what we want
+    for (int i = 0; i < rendercalls.size(); i++)
+    {
+        RenderCall& rc = rendercalls[i];
+        // solo queremos que coja los shaders de Gbuffers
+        // no quiero cambiar modo de render -> ahora always este modo
+        renderMeshWithMaterial(eRenderMode::GBUFFERS, rc.model, rc.mesh, rc.material, camera);
+    }
+
+    //stop rendering to the gbuffers
+    gbuffers_fbo.unbind();
+
+    //clear 
+    glClearColor(0, 0, 0, 0);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    //desactivo los flags
+    glDisable(GL_DEPTH_TEST);
+    glDisable(GL_BLEND);
+
+
+    Mesh* quad = Mesh::getQuad(); ///////////////////////////////////
+    Shader* shader = Shader::Get("deferred");
+    shader->enable();
+    shader->setTexture("u_color_texture", gbuffers_fbo.color_textures[0], 0);
+    shader->setTexture("u_normal_texture", gbuffers_fbo.color_textures[1], 1);
+    shader->setTexture("u_extra_texture", gbuffers_fbo.color_textures[2], 2);
+    shader->setTexture("u_depth_texture", gbuffers_fbo.depth_texture, 3);
+    shader->setUniform("u_ambient_light", scene->ambient_light);
+    //shader->setUniform("u_emissive_factor", );
+    // emisive texture
+    // oclustion texture
+    // no se puede leer de model.. solo infor de las texturas...
+
+    Matrix44 model = camera->viewprojection_matrix;
+    model.inverse();
+
+    shader->setUniform("u_inverse_viewprojection", model);
+
+    //u_iRes
+
+    /*
+    //multipass rendeting
+    for (int i = 0; i < this->light_entities.size(); i++)
+    {
+        LightEntity* light = this->light_entities[i];
+
+        light->uploadToShader(shader);
+        //Rendeer fullscreen quad
+        quad->render(GL_TRIANGLES);
+
+        // have to accumulate the light contribution of every light, after 2º light
+        //only one pass ambient light and emissive light
+        shader->setUniform("u_ambient_light", Vector3(0, 0, 0));
+        //shader->setUniform("u_emissive_factor", Vector3(0, 0, 0));
+        glEnable(GL_BLEND);
+        glDepthFunc(GL_LEQUAL);
+        glBlendFunc(GL_ONE, GL_ONE);// sum each pixels with the befors...
+
+
+
+    }*/
+
+    glDisable(GL_BLEND);
+
+    //to plot every textures in the viewport
+    //gbuffers_fbo.color_textures[0]->toViewport(Shader::Get("showAlpha"));// pq puedo llamar directamente el shader?
+    if (show_gbuffers) {
+
+        int width = Application::instance->window_width;
+        int height = Application::instance->window_height;
+
+        //GB0 color
+        glViewport(0, 0, width * 0.5, height * 0.5);
+        gbuffers_fbo.color_textures[0]->toViewport();
+
+        //GB1 normal
+        glViewport(width * 0.5, 0, width * 0.5, height * 0.5);
+        gbuffers_fbo.color_textures[1]->toViewport();
+
+        //GB2 material. properties
+        glViewport(width * 0.5, height * 0.5, width * 0.5, height * 0.5);
+        gbuffers_fbo.color_textures[2]->toViewport();
+
+        //GB3 depth_buffer
+        glViewport(0, height * 0.5, width * 0.5, height * 0.5);
+        //need to pass a linear with shader depth, to be able to see. No se ve-> pq necesita parm
+        // para linealizar necesito el near and far de la camara.
+        Shader* depth_sh = Shader::Get("depth");
+        depth_sh->enable();
+        depth_sh->setUniform("u_camera_nearfar", Vector2(camera->near_plane, camera->far_plane));
+        //depth_sh->disable();
+        gbuffers_fbo.depth_texture->toViewport(depth_sh);
+
+        //Volver a poner el tamaño de VPort. 0,0 en una textura esta abajo iz!
+        glViewport(0, 0, width, height);
+    }
+}
 
 //renders all the prefab
-void Renderer::collectPrefabInRenderCall(const Matrix44& model, GTR::Prefab* prefab, Camera* camera, std::vector<RenderCall*>* rc_vector)
+void Renderer::collectPrefabInRenderCall(const Matrix44& model, GTR::Prefab* prefab, Camera* camera, std::vector<RenderCall>& rc)
 {
 	assert(prefab && "PREFAB IS NULL");
 	//assign the model to the root node
-	collectNodesInRenderCall(model, &prefab->root, camera, rc_vector);
+	collectNodesInRenderCall(model, &prefab->root, camera, rc);
 }
 
 //renders a node of the prefab and its children
-void Renderer::collectNodesInRenderCall(const Matrix44& prefab_model, GTR::Node* node, Camera* camera, std::vector<RenderCall*>* rc_vector)
+void Renderer::collectNodesInRenderCall(const Matrix44& prefab_model, GTR::Node* node, Camera* camera,  std::vector<RenderCall>& rc_vector)
 {
 	if (!node->visible)
 		return;
@@ -195,8 +299,16 @@ void Renderer::collectNodesInRenderCall(const Matrix44& prefab_model, GTR::Node*
 		{
 			//render node mesh
 			//renderMeshWithMaterial( node_model, node->mesh, node->material, camera );
-			RenderCall* rc = new RenderCall(&node_model, node->mesh, node->material, 10.0f); // De momento forzamos un mismo número de distance to camera
-			rc_vector->push_back(rc);
+			//RenderCall* rc = new RenderCall(&node_model, node->mesh, node->material, 10.0f); // De momento forzamos un mismo número de distance to camera
+            RenderCall rc;
+            rc.model = node_model;
+            rc.material = node->material;
+            rc.mesh = node->mesh;
+            rc.distance_to_camera = camera->eye.distance(world_bounding.center);
+
+            rc_vector.push_back(rc);
+
+            
 			//node->mesh->renderBounding(node_model, true);
 		}
 	}
@@ -206,7 +318,7 @@ void Renderer::collectNodesInRenderCall(const Matrix44& prefab_model, GTR::Node*
 		collectNodesInRenderCall(prefab_model, node->children[i], camera, rc_vector);
 }
 
-void Renderer::renderToTexture(Camera* camera, FBO* fbo, std::vector<RenderCall*> rc_vector){
+void Renderer::renderToTexture(Camera* camera, FBO* fbo, std::vector<RenderCall>& rc_vector){
     fbo->bind();
    
     //you can disable writing to the color buffer to speed up the rendering as we do not need it
@@ -218,7 +330,7 @@ void Renderer::renderToTexture(Camera* camera, FBO* fbo, std::vector<RenderCall*
 
     
     for (int i = 0; i<rc_vector.size(); i++){
-        renderMesh(rc_vector[i]->model, rc_vector[i]->mesh, camera, rc_vector[i]->material->alpha_mode);
+        renderMesh(rc_vector[i].model, rc_vector[i].mesh, camera, rc_vector[i].material->alpha_mode);
     }
     fbo->unbind();
     
@@ -227,8 +339,8 @@ void Renderer::renderToTexture(Camera* camera, FBO* fbo, std::vector<RenderCall*
 
 }
 
-void Renderer::renderLightDepthBuffer(LightEntity* light, std::vector<RenderCall*> rc_vector){
-    renderToTexture(light->camera, light->fbo, rc_vector);
+void Renderer::renderLightDepthBuffer(LightEntity* light, std::vector<RenderCall>& rc_vector){
+    renderToTexture(light->camera_light, light->fbo, rc_vector);
 }
 
 void Renderer::viewDepthBuffer(LightEntity* light){
@@ -238,7 +350,7 @@ void Renderer::viewDepthBuffer(LightEntity* light){
     //to use a special shader
     Shader* zshader = Shader::Get("depth");
     zshader->enable();
-    zshader->setUniform("u_camera_nearfar", Vector2(light->camera->near_plane, light->camera->far_plane));
+    zshader->setUniform("u_camera_nearfar", Vector2(light->camera_light->near_plane, light->camera_light->far_plane));
     
     // To render in a portion of the screen
     int w = Application::instance->window_width;
@@ -290,12 +402,17 @@ void Renderer::renderMesh(const Matrix44 model, Mesh* mesh, Camera* camera, eAlp
 }
 
 //renders a mesh given its transform and material
-void Renderer::renderMeshWithMaterial(const Matrix44 model, Mesh* mesh, GTR::Material* material, Camera* camera)
+void Renderer::renderMeshWithMaterial(eRenderMode mode, const Matrix44 model, Mesh* mesh, GTR::Material* material, Camera* camera)
 {
 	//in case there is nothing to do
 	if (!mesh || !mesh->getNumVertices() || !material )
 		return;
     assert(glGetError() == GL_NO_ERROR);
+
+    //flag para deffered en materiales con transparencias.
+    if (mode == GBUFFERS && material->alpha_mode == GTR::eAlphaMode::BLEND)
+        return; // luego cambiar con reticula..., usar disering??
+
 
 	//define locals to simplify coding
 	Shader* shader = NULL;
@@ -335,6 +452,9 @@ void Renderer::renderMeshWithMaterial(const Matrix44 model, Mesh* mesh, GTR::Mat
 
 	//chose a shader
 	shader = Shader::Get(this->shader_name.c_str());
+   
+    if (mode == GBUFFERS)
+        shader = Shader::Get("gbuffers");
 
     assert(glGetError() == GL_NO_ERROR);
 
@@ -383,6 +503,96 @@ void Renderer::renderMeshWithMaterial(const Matrix44 model, Mesh* mesh, GTR::Mat
 	//set the render state as it was before to avoid problems with future renders
 	glDisable(GL_BLEND);
 }
+
+
+void Renderer::changeMultiLightRendering() {
+    this->multiple_light_rendering = static_cast<GTR::eMultipleLightRendering>((this->multiple_light_rendering + 1) % 3);
+
+    if (multiple_light_rendering == SINGLEPASS) {
+        shader_name = "singlepass";
+    }
+    else if (multiple_light_rendering == MULTIPASS || multiple_light_rendering == NOMULTIPLELIGHT) {
+        shader_name = "light";
+    }
+
+}
+
+void Renderer::singlepassRendering(std::vector<LightEntity*> light_entities, Shader* shader, Mesh* mesh)
+{
+    int number_of_lights = (int)light_entities.size();
+    Vector3 light_color[5];
+    Vector3 light_position[5];
+    eLightType light_type[5];
+    Vector3 target[5];
+    float max_distance[5];
+    float cone_angle[5];
+
+    for (int i = 0; i < number_of_lights; i++) {
+        GTR::LightEntity* light = light_entities[i];
+
+        light_color[i] = light->color;
+        light_position[i] = light->model.getTranslation();
+        light_type[i] = light->light_type;
+        target[i] = light->model.frontVector();;
+        max_distance[i] = light->max_distance;
+        cone_angle[i] = light->cone_angle;
+    }
+    shader->setUniform3Array("u_light_color", (float*)&light_color, number_of_lights);
+    shader->setUniform3Array("u_light_position", (float*)&light_position, number_of_lights);
+    shader->setUniform1Array("u_light_type", (int*)&light_type, number_of_lights);
+    shader->setUniform3Array("u_light_direction", (float*)&target, number_of_lights);
+    shader->setUniform1Array("u_max_distance", (float*)&max_distance, number_of_lights);
+    shader->setUniform1Array("u_cone_angle", (float*)&cone_angle, number_of_lights);
+    shader->setUniform1("u_num_lights", number_of_lights);
+
+    //do the draw call that renders the mesh into the screen
+    mesh->render(GL_TRIANGLES);
+}
+
+void Renderer::multipassRendering(std::vector<LightEntity*> lights, Shader* shader, Mesh* mesh, Material* material) {
+    int num_lights = (int)lights.size();
+
+    //allow to render pixels that have the same depth as the one in the depth buffer
+    glDepthFunc(GL_LEQUAL);
+
+    //set blending mode to additive
+    //this will collide with materials with blend...
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+
+    for (int i = 0; i < num_lights; ++i)
+    {
+        //first pass doesn't use blending
+        if (i == 0)
+            glDisable(GL_BLEND);
+
+        else {
+            glEnable(GL_BLEND);
+            shader->setUniform("u_emissive_factor", Vector3(0, 0, 0));
+            shader->setUniform("u_ambient_light", Vector3(0, 0, 0));
+        }
+
+        if (material->alpha_mode == GTR::eAlphaMode::BLEND) {
+            glEnable(GL_BLEND);
+            glBlendFunc(GL_ONE, GL_ONE);
+        }
+
+        //pass the light data to the shader
+        lights[i]->setUniforms(shader);
+
+        //render the mesh
+        mesh->render(GL_TRIANGLES);
+    }
+
+    glDisable(GL_BLEND);
+    glDepthFunc(GL_LESS); //as default
+}
+
+
+
+
+
+
+
 
 
 Texture* GTR::CubemapFromHDRE(const char* filename)

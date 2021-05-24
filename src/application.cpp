@@ -51,8 +51,10 @@ Application::Application(int window_width, int window_height, SDL_Window* window
 #ifdef __APPLE__
     const char* shader_atlas_filename = "data/shader_atlas_osx.txt";
 #else
-    const char* shader_atlas_filename = "data/shader_atlas.txt";
+
+    //0const char* shader_atlas_filename = "data/shader_atlas.txt";
 #endif
+	const char* shader_atlas_filename = "data/shader_atlas_osx.txt";
 	if(!Shader::LoadAtlas(shader_atlas_filename))
         exit(1);
     checkGLErrors();
@@ -115,6 +117,7 @@ void Application::render(void)
 
 	glViewport(0, 0, window_width, window_height);
     renderer->renderScene(scene, camera);
+
     //Draw the floor grid, helpful to have a reference point
 //    if(render_debug)
 //        drawGrid();
@@ -273,6 +276,7 @@ void Application::renderDebugGUI(void)
 	ImGui::Checkbox("Wireframe", &render_wireframe);
 	ImGui::ColorEdit3("BG color", scene->background_color.v);
 	ImGui::ColorEdit3("Ambient Light", scene->ambient_light.v);
+	ImGui::Combo("Pipeline", (int*)&renderer->pipeline_mode, "FORWARD\0DEFERRED\0", 2);
 
 	//add info to the debug panel about the camera
 	if (ImGui::TreeNode(camera, "Camera")) {
@@ -334,6 +338,8 @@ void Application::onKeyDown( SDL_KeyboardEvent event )
         case SDLK_0:
             renderer->changeMultiLightRendering();
             break;
+
+
 	}
 }
 

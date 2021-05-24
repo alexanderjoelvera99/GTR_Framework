@@ -1,52 +1,169 @@
 ﻿  application.cpp
-F:\COURSES\GTR\GTR_Framework\src\scene.h(8,12): warning C4099: 'cJSON': nombre de tipo visto anteriormente usando 'struct' ahora se ve usando 'class'
-F:\COURSES\GTR\GTR_Framework\src\extra\cJSON.h(103): message : vea la declaración de 'cJSON'
-F:\COURSES\GTR\GTR_Framework\src\application.cpp(116,14): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
-F:\COURSES\GTR\GTR_Framework\src\application.cpp(117,20): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
-F:\COURSES\GTR\GTR_Framework\src\application.cpp(133,55): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
-F:\COURSES\GTR\GTR_Framework\src\application.cpp(135,55): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
-F:\COURSES\GTR\GTR_Framework\src\application.cpp(256,20): warning C4018: '<': no coinciden signed/unsigned
-F:\COURSES\GTR\GTR_Framework\src\application.cpp(344,36): warning C4244: '*=': conversión de 'double' a 'float'; posible pérdida de datos
-F:\COURSES\GTR\GTR_Framework\src\application.cpp(346,35): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
-     Creando biblioteca ..\..\framework.lib y objeto ..\..\framework.exp
-LINK : warning LNK4098: la biblioteca predeterminada'LIBCMT' entra en conflicto con otras bibliotecas; use la biblioteca /NODEFAULTLIB:biblioteca
-  Generando código
-  2 of 4046 functions (<0.1%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    50 functions had inline decision re-evaluated but remain unchanged
-  Generación de código finalizada
-LINK : warning LNK4286: "___glewDeleteBuffers" importa el símbolo "glew32s.lib(glew.obj)" definido en "imgui_impl_opengl3.obj"
-LINK : warning LNK4286: "___glewLinkProgram" importa el símbolo "glew32s.lib(glew.obj)" definido en "imgui_impl_opengl3.obj"
-LINK : warning LNK4286: "___glewDeleteShader" importa el símbolo "glew32s.lib(glew.obj)" definido en "imgui_impl_opengl3.obj"
-LINK : warning LNK4286: "___glewGenBuffers" importa el símbolo "glew32s.lib(glew.obj)" definido en "imgui_impl_opengl3.obj"
-LINK : warning LNK4286: "___glewGetProgramInfoLog" importa el símbolo "glew32s.lib(glew.obj)" definido en "imgui_impl_opengl3.obj"
-LINK : warning LNK4286: "___glewDetachShader" importa el símbolo "glew32s.lib(glew.obj)" definido en "imgui_impl_opengl3.obj"
-LINK : warning LNK4286: "___glewUniformMatrix4fv" importa el símbolo "glew32s.lib(glew.obj)" definido en "imgui_impl_opengl3.obj"
-LINK : warning LNK4286: "___glewBlendEquationSeparate" importa el símbolo "glew32s.lib(glew.obj)" definido en "imgui_impl_opengl3.obj"
-LINK : warning LNK4286: "___glewGenVertexArrays" importa el símbolo "glew32s.lib(glew.obj)" definido en "imgui_impl_opengl3.obj"
-LINK : warning LNK4286: "___glewBlendEquation" importa el símbolo "glew32s.lib(glew.obj)" definido en "imgui_impl_opengl3.obj"
-LINK : warning LNK4286: "___glewShaderSource" importa el símbolo "glew32s.lib(glew.obj)" definido en "imgui_impl_opengl3.obj"
-LINK : warning LNK4286: "___glewDeleteProgram" importa el símbolo "glew32s.lib(glew.obj)" definido en "imgui_impl_opengl3.obj"
-LINK : warning LNK4286: "___glewActiveTexture" importa el símbolo "glew32s.lib(glew.obj)" definido en "imgui_impl_opengl3.obj"
-LINK : warning LNK4286: "___glewAttachShader" importa el símbolo "glew32s.lib(glew.obj)" definido en "imgui_impl_opengl3.obj"
-LINK : warning LNK4286: "___glewBufferData" importa el símbolo "glew32s.lib(glew.obj)" definido en "imgui_impl_opengl3.obj"
-LINK : warning LNK4286: "___glewGetUniformLocation" importa el símbolo "glew32s.lib(glew.obj)" definido en "imgui_impl_opengl3.obj"
-LINK : warning LNK4286: "___glewBlendFuncSeparate" importa el símbolo "glew32s.lib(glew.obj)" definido en "imgui_impl_opengl3.obj"
-LINK : warning LNK4286: "___glewDeleteVertexArrays" importa el símbolo "glew32s.lib(glew.obj)" definido en "imgui_impl_opengl3.obj"
-LINK : warning LNK4286: "___glewGetProgramiv" importa el símbolo "glew32s.lib(glew.obj)" definido en "imgui_impl_opengl3.obj"
-LINK : warning LNK4286: "___glewGetShaderInfoLog" importa el símbolo "glew32s.lib(glew.obj)" definido en "imgui_impl_opengl3.obj"
-LINK : warning LNK4286: "___glewUniform1i" importa el símbolo "glew32s.lib(glew.obj)" definido en "imgui_impl_opengl3.obj"
-LINK : warning LNK4286: "___glewCreateProgram" importa el símbolo "glew32s.lib(glew.obj)" definido en "imgui_impl_opengl3.obj"
-LINK : warning LNK4286: "___glewBindBuffer" importa el símbolo "glew32s.lib(glew.obj)" definido en "imgui_impl_opengl3.obj"
-LINK : warning LNK4286: "___glewCreateShader" importa el símbolo "glew32s.lib(glew.obj)" definido en "imgui_impl_opengl3.obj"
-LINK : warning LNK4286: "___glewGetAttribLocation" importa el símbolo "glew32s.lib(glew.obj)" definido en "imgui_impl_opengl3.obj"
-LINK : warning LNK4286: "___glewCompileShader" importa el símbolo "glew32s.lib(glew.obj)" definido en "imgui_impl_opengl3.obj"
-LINK : warning LNK4286: "___glewGetShaderiv" importa el símbolo "glew32s.lib(glew.obj)" definido en "imgui_impl_opengl3.obj"
-LINK : warning LNK4286: "___glewDrawElementsBaseVertex" importa el símbolo "glew32s.lib(glew.obj)" definido en "imgui_impl_opengl3.obj"
-LINK : warning LNK4286: "___glewVertexAttribPointer" importa el símbolo "glew32s.lib(glew.obj)" definido en "imgui_impl_opengl3.obj"
-LINK : warning LNK4286: "___glewUseProgram" importa el símbolo "glew32s.lib(glew.obj)" definido en "imgui_impl_opengl3.obj"
-LINK : warning LNK4286: "___glewBindSampler" importa el símbolo "glew32s.lib(glew.obj)" definido en "imgui_impl_opengl3.obj"
-LINK : warning LNK4286: "___glewBindVertexArray" importa el símbolo "glew32s.lib(glew.obj)" definido en "imgui_impl_opengl3.obj"
-LINK : warning LNK4286: "___glewEnableVertexAttribArray" importa el símbolo "glew32s.lib(glew.obj)" definido en "imgui_impl_opengl3.obj"
-glew32s.lib(glew.obj) : warning LNK4099: no se encontró PDB 'vc120.pdb' con 'glew32s.lib(glew.obj)' o en 'F:\COURSES\GTR\GTR_Framework\vc120.pdb'; se vinculará el objeto sin tener en cuenta información de depuración
-  visualstudio.vcxproj -> F:\COURSES\GTR\GTR_Framework\visualstudio\VS2015\..\..\framework.exe
+  gltf_loader.cpp
+  renderer.cpp
+  prefab.cpp
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(99,46): error C2065: 'LightEntity': identificador no declarado (compilando archivo de origen ..\..\src\gltf_loader.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(99,58): error C2059: error de sintaxis: '>' (compilando archivo de origen ..\..\src\gltf_loader.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(102,39): error C2065: 'LightEntity': identificador no declarado (compilando archivo de origen ..\..\src\gltf_loader.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(102,51): error C2059: error de sintaxis: '>' (compilando archivo de origen ..\..\src\gltf_loader.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(105,31): error C2039: "Scene": no es un miembro de "GTR" (compilando archivo de origen ..\..\src\gltf_loader.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(9): message : vea la declaración de 'GTR' (compilando archivo de origen ..\..\src\gltf_loader.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(105,36): error C2061: error de sintaxis: identificador 'Scene' (compilando archivo de origen ..\..\src\gltf_loader.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(108,31): error C2039: "Scene": no es un miembro de "GTR" (compilando archivo de origen ..\..\src\gltf_loader.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(9): message : vea la declaración de 'GTR' (compilando archivo de origen ..\..\src\gltf_loader.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(108,36): error C2061: error de sintaxis: identificador 'Scene' (compilando archivo de origen ..\..\src\gltf_loader.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(113,33): error C2039: "Scene": no es un miembro de "GTR" (compilando archivo de origen ..\..\src\gltf_loader.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(9): message : vea la declaración de 'GTR' (compilando archivo de origen ..\..\src\gltf_loader.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(113,38): error C2061: error de sintaxis: identificador 'Scene' (compilando archivo de origen ..\..\src\gltf_loader.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(115,34): error C2039: "Scene": no es un miembro de "GTR" (compilando archivo de origen ..\..\src\gltf_loader.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(9): message : vea la declaración de 'GTR' (compilando archivo de origen ..\..\src\gltf_loader.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(115,39): error C2061: error de sintaxis: identificador 'Scene' (compilando archivo de origen ..\..\src\gltf_loader.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(121,61): error C2039: "Node": no es un miembro de "GTR" (compilando archivo de origen ..\..\src\gltf_loader.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(9): message : vea la declaración de 'GTR' (compilando archivo de origen ..\..\src\gltf_loader.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(121,65): error C2061: error de sintaxis: identificador 'Node' (compilando archivo de origen ..\..\src\gltf_loader.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(127,37): error C2061: error de sintaxis: identificador 'LightEntity' (compilando archivo de origen ..\..\src\gltf_loader.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(130,30): error C2061: error de sintaxis: identificador 'LightEntity' (compilando archivo de origen ..\..\src\gltf_loader.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\extra\cgltf.h(771,15): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details. (compilando archivo de origen ..\..\src\gltf_loader.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\extra\cgltf.h(1006,3): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details. (compilando archivo de origen ..\..\src\gltf_loader.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\extra\cgltf.h(1010,3): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details. (compilando archivo de origen ..\..\src\gltf_loader.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\extra\cgltf.h(1005,3): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details. (compilando archivo de origen ..\..\src\gltf_loader.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\extra\cgltf.h(1415,3): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details. (compilando archivo de origen ..\..\src\gltf_loader.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\extra\cgltf.h(1420,3): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details. (compilando archivo de origen ..\..\src\gltf_loader.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\extra\cgltf.h(1965,2): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details. (compilando archivo de origen ..\..\src\gltf_loader.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\extra\cgltf.h(1975,2): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details. (compilando archivo de origen ..\..\src\gltf_loader.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\extra\cgltf.h(2054,2): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details. (compilando archivo de origen ..\..\src\gltf_loader.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\extra\cJSON.h(104,1): warning C4099: 'cJSON': nombre de tipo visto anteriormente usando 'class' ahora se ve usando 'struct' (compilando archivo de origen ..\..\src\renderer.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\extra\cJSON.h(103): message : vea la declaración de 'cJSON' (compilando archivo de origen ..\..\src\renderer.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.cpp(83,20): warning C4018: '<': no coinciden signed/unsigned
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.cpp(116,23): warning C4018: '<': no coinciden signed/unsigned
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.cpp(176,23): warning C4018: '<': no coinciden signed/unsigned
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.cpp(248,46): warning C4244: 'argumento': conversión de 'double' a 'GLsizei'; posible pérdida de datos
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.cpp(248,32): warning C4244: 'argumento': conversión de 'double' a 'GLsizei'; posible pérdida de datos
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.cpp(252,56): warning C4244: 'argumento': conversión de 'double' a 'GLsizei'; posible pérdida de datos
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.cpp(252,42): warning C4244: 'argumento': conversión de 'double' a 'GLsizei'; posible pérdida de datos
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.cpp(252,26): warning C4244: 'argumento': conversión de 'double' a 'GLint'; posible pérdida de datos
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.cpp(256,67): warning C4244: 'argumento': conversión de 'double' a 'GLsizei'; posible pérdida de datos
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.cpp(256,53): warning C4244: 'argumento': conversión de 'double' a 'GLsizei'; posible pérdida de datos
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.cpp(256,40): warning C4244: 'argumento': conversión de 'double' a 'GLint'; posible pérdida de datos
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.cpp(256,26): warning C4244: 'argumento': conversión de 'double' a 'GLint'; posible pérdida de datos
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.cpp(260,57): warning C4244: 'argumento': conversión de 'double' a 'GLsizei'; posible pérdida de datos
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.cpp(260,43): warning C4244: 'argumento': conversión de 'double' a 'GLsizei'; posible pérdida de datos
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.cpp(260,30): warning C4244: 'argumento': conversión de 'double' a 'GLint'; posible pérdida de datos
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.cpp(317,20): warning C4018: '<': no coinciden signed/unsigned
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.cpp(332,22): warning C4018: '<': no coinciden signed/unsigned
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.cpp(358,30): warning C4244: 'argumento': conversión de 'double' a 'GLsizei'; posible pérdida de datos
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.cpp(358,23): warning C4244: 'argumento': conversión de 'double' a 'GLsizei'; posible pérdida de datos
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.cpp(432,20): warning C4018: '<': no coinciden signed/unsigned
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\extra\cJSON.h(104,1): warning C4099: 'cJSON': nombre de tipo visto anteriormente usando 'class' ahora se ve usando 'struct' (compilando archivo de origen ..\..\src\gltf_loader.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\extra\cJSON.h(103): message : vea la declaración de 'cJSON' (compilando archivo de origen ..\..\src\gltf_loader.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\gltf_loader.cpp(61,20): warning C4018: '<': no coinciden signed/unsigned
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\gltf_loader.cpp(71,13): warning C4018: '<': no coinciden signed/unsigned
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\gltf_loader.cpp(114,20): warning C4018: '<': no coinciden signed/unsigned
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\gltf_loader.cpp(141,20): warning C4018: '<': no coinciden signed/unsigned
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\gltf_loader.cpp(163,20): warning C4018: '<': no coinciden signed/unsigned
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\gltf_loader.cpp(183,21): warning C4018: '<': no coinciden signed/unsigned
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\gltf_loader.cpp(397,22): warning C4018: '<': no coinciden signed/unsigned
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\gltf_loader.cpp(426,20): warning C4018: '<': no coinciden signed/unsigned
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\gltf_loader.cpp(471,2): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\gltf_loader.cpp(491,22): warning C4018: '<': no coinciden signed/unsigned
+  scene.cpp
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(99,46): error C2065: 'LightEntity': identificador no declarado (compilando archivo de origen ..\..\src\application.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(99,58): error C2059: error de sintaxis: '>' (compilando archivo de origen ..\..\src\application.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(102,39): error C2065: 'LightEntity': identificador no declarado (compilando archivo de origen ..\..\src\application.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(102,51): error C2059: error de sintaxis: '>' (compilando archivo de origen ..\..\src\application.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(105,31): error C2039: "Scene": no es un miembro de "GTR" (compilando archivo de origen ..\..\src\application.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(9): message : vea la declaración de 'GTR' (compilando archivo de origen ..\..\src\application.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(105,36): error C2061: error de sintaxis: identificador 'Scene' (compilando archivo de origen ..\..\src\application.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(108,31): error C2039: "Scene": no es un miembro de "GTR" (compilando archivo de origen ..\..\src\application.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(9): message : vea la declaración de 'GTR' (compilando archivo de origen ..\..\src\application.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(108,36): error C2061: error de sintaxis: identificador 'Scene' (compilando archivo de origen ..\..\src\application.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(113,33): error C2039: "Scene": no es un miembro de "GTR" (compilando archivo de origen ..\..\src\application.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(9): message : vea la declaración de 'GTR' (compilando archivo de origen ..\..\src\application.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(113,38): error C2061: error de sintaxis: identificador 'Scene' (compilando archivo de origen ..\..\src\application.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(115,34): error C2039: "Scene": no es un miembro de "GTR" (compilando archivo de origen ..\..\src\application.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(9): message : vea la declaración de 'GTR' (compilando archivo de origen ..\..\src\application.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(115,39): error C2061: error de sintaxis: identificador 'Scene' (compilando archivo de origen ..\..\src\application.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(121,61): error C2039: "Node": no es un miembro de "GTR" (compilando archivo de origen ..\..\src\application.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(9): message : vea la declaración de 'GTR' (compilando archivo de origen ..\..\src\application.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(121,65): error C2061: error de sintaxis: identificador 'Node' (compilando archivo de origen ..\..\src\application.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(127,37): error C2061: error de sintaxis: identificador 'LightEntity' (compilando archivo de origen ..\..\src\application.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(130,30): error C2061: error de sintaxis: identificador 'LightEntity' (compilando archivo de origen ..\..\src\application.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\scene.h(15,12): warning C4099: 'cJSON': nombre de tipo visto anteriormente usando 'struct' ahora se ve usando 'class' (compilando archivo de origen ..\..\src\application.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\extra\cJSON.h(103): message : vea la declaración de 'cJSON' (compilando archivo de origen ..\..\src\application.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\application.cpp(119,40): error C2660: 'GTR::Renderer::renderScene': la función no acepta 2 argumentos
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(105,14): message : vea la declaración de 'GTR::Renderer::renderScene' (compilando archivo de origen ..\..\src\application.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\application.cpp(133,14): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\application.cpp(134,20): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\application.cpp(166,55): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\application.cpp(168,55): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\application.cpp(290,20): warning C4018: '<': no coinciden signed/unsigned
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\application.cpp(397,36): warning C4244: '*=': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\application.cpp(399,35): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(99,46): error C2065: 'LightEntity': identificador no declarado (compilando archivo de origen ..\..\src\prefab.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(99,58): error C2059: error de sintaxis: '>' (compilando archivo de origen ..\..\src\prefab.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(102,39): error C2065: 'LightEntity': identificador no declarado (compilando archivo de origen ..\..\src\prefab.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(102,51): error C2059: error de sintaxis: '>' (compilando archivo de origen ..\..\src\prefab.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(105,31): error C2039: "Scene": no es un miembro de "GTR" (compilando archivo de origen ..\..\src\prefab.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(9): message : vea la declaración de 'GTR' (compilando archivo de origen ..\..\src\prefab.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(105,36): error C2061: error de sintaxis: identificador 'Scene' (compilando archivo de origen ..\..\src\prefab.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(108,31): error C2039: "Scene": no es un miembro de "GTR" (compilando archivo de origen ..\..\src\prefab.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(9): message : vea la declaración de 'GTR' (compilando archivo de origen ..\..\src\prefab.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(108,36): error C2061: error de sintaxis: identificador 'Scene' (compilando archivo de origen ..\..\src\prefab.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(113,33): error C2039: "Scene": no es un miembro de "GTR" (compilando archivo de origen ..\..\src\prefab.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(9): message : vea la declaración de 'GTR' (compilando archivo de origen ..\..\src\prefab.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(113,38): error C2061: error de sintaxis: identificador 'Scene' (compilando archivo de origen ..\..\src\prefab.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(115,34): error C2039: "Scene": no es un miembro de "GTR" (compilando archivo de origen ..\..\src\prefab.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(9): message : vea la declaración de 'GTR' (compilando archivo de origen ..\..\src\prefab.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(115,39): error C2061: error de sintaxis: identificador 'Scene' (compilando archivo de origen ..\..\src\prefab.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(121,61): error C2039: "Node": no es un miembro de "GTR" (compilando archivo de origen ..\..\src\prefab.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(9): message : vea la declaración de 'GTR' (compilando archivo de origen ..\..\src\prefab.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(121,65): error C2061: error de sintaxis: identificador 'Node' (compilando archivo de origen ..\..\src\prefab.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(127,37): error C2061: error de sintaxis: identificador 'LightEntity' (compilando archivo de origen ..\..\src\prefab.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(130,30): error C2061: error de sintaxis: identificador 'LightEntity' (compilando archivo de origen ..\..\src\prefab.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\extra\cJSON.h(104,1): warning C4099: 'cJSON': nombre de tipo visto anteriormente usando 'class' ahora se ve usando 'struct' (compilando archivo de origen ..\..\src\prefab.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\extra\cJSON.h(103): message : vea la declaración de 'cJSON' (compilando archivo de origen ..\..\src\prefab.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\prefab.cpp(41,20): warning C4018: '<': no coinciden signed/unsigned
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\prefab.cpp(55,20): warning C4018: '<': no coinciden signed/unsigned
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\prefab.cpp(63,20): warning C4018: '<': no coinciden signed/unsigned
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\prefab.cpp(79,20): warning C4018: '<': no coinciden signed/unsigned
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\prefab.cpp(108,20): warning C4018: '<': no coinciden signed/unsigned
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\prefab.cpp(138,20): warning C4018: '<': no coinciden signed/unsigned
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\prefab.cpp(170,22): warning C4018: '<': no coinciden signed/unsigned
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\prefab.cpp(243,20): warning C4018: '<': no coinciden signed/unsigned
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(99,46): error C2065: 'LightEntity': identificador no declarado (compilando archivo de origen ..\..\src\scene.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(99,58): error C2059: error de sintaxis: '>' (compilando archivo de origen ..\..\src\scene.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(102,39): error C2065: 'LightEntity': identificador no declarado (compilando archivo de origen ..\..\src\scene.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(102,51): error C2059: error de sintaxis: '>' (compilando archivo de origen ..\..\src\scene.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(105,31): error C2039: "Scene": no es un miembro de "GTR" (compilando archivo de origen ..\..\src\scene.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(9): message : vea la declaración de 'GTR' (compilando archivo de origen ..\..\src\scene.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(105,36): error C2061: error de sintaxis: identificador 'Scene' (compilando archivo de origen ..\..\src\scene.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(108,31): error C2039: "Scene": no es un miembro de "GTR" (compilando archivo de origen ..\..\src\scene.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(9): message : vea la declaración de 'GTR' (compilando archivo de origen ..\..\src\scene.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(108,36): error C2061: error de sintaxis: identificador 'Scene' (compilando archivo de origen ..\..\src\scene.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(113,33): error C2039: "Scene": no es un miembro de "GTR" (compilando archivo de origen ..\..\src\scene.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(9): message : vea la declaración de 'GTR' (compilando archivo de origen ..\..\src\scene.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(113,38): error C2061: error de sintaxis: identificador 'Scene' (compilando archivo de origen ..\..\src\scene.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(115,34): error C2039: "Scene": no es un miembro de "GTR" (compilando archivo de origen ..\..\src\scene.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(9): message : vea la declaración de 'GTR' (compilando archivo de origen ..\..\src\scene.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(115,39): error C2061: error de sintaxis: identificador 'Scene' (compilando archivo de origen ..\..\src\scene.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(127,37): error C2061: error de sintaxis: identificador 'LightEntity' (compilando archivo de origen ..\..\src\scene.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.h(130,30): error C2061: error de sintaxis: identificador 'LightEntity' (compilando archivo de origen ..\..\src\scene.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\extra\cJSON.h(104,1): warning C4099: 'cJSON': nombre de tipo visto anteriormente usando 'class' ahora se ve usando 'struct' (compilando archivo de origen ..\..\src\scene.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\extra\cJSON.h(103): message : vea la declaración de 'cJSON' (compilando archivo de origen ..\..\src\scene.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\scene.cpp(18,20): warning C4018: '<': no coinciden signed/unsigned
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\scene.cpp(23,23): warning C4018: '<': no coinciden signed/unsigned
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\scene.cpp(101,16): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\scene.cpp(102,28): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\scene.cpp(195,8): error C2039: "camera": no es un miembro de "GTR::LightEntity"
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\scene.h(70): message : vea la declaración de 'GTR::LightEntity'
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\scene.cpp(198,31): warning C4305: '=': truncamiento de 'double' a 'float'
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\scene.cpp(212,11): error C2039: "camera": no es un miembro de "GTR::LightEntity"
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\scene.h(70): message : vea la declaración de 'GTR::LightEntity'
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\scene.cpp(226,51): error C2039: "camera": no es un miembro de "GTR::LightEntity"
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\scene.h(70): message : vea la declaración de 'GTR::LightEntity'
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\scene.cpp(226,80): error C2661: 'Shader::setUniform': ninguna función sobrecargada acepta 1 argumentos
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\scene.cpp(280,43): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\scene.cpp(304,34): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\scene.cpp(306,9): error C2065: 'camera': identificador no declarado
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\scene.cpp(309,9): error C2065: 'camera': identificador no declarado
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\scene.cpp(322,2): error C2065: 'camera': identificador no declarado
