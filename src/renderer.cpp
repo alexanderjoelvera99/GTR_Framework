@@ -10,7 +10,7 @@
 #include "scene.h"
 #include "extra/hdre.h"
 #include "application.h"
-
+#include <algorithm>  
 
 using namespace GTR;
 Renderer::Renderer(GTR::eMultipleLightRendering multiple_light_rendering, std::string shader_name){

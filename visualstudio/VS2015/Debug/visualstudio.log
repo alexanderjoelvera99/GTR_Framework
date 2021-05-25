@@ -6,16 +6,16 @@
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\extra\coldet\box_bld.cpp(134,21): warning C4018: '<': no coinciden signed/unsigned
   coldet_bld.cpp
   math3d.cpp
-  mytritri.cpp
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\extra\coldet\coldet.cpp(374,10): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
+  mytritri.cpp
   sysdep.cpp
   tritri.cpp
   hdre.cpp
+  ImCurveEdit.cpp
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\camera.cpp(116,11): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\camera.cpp(125,13): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\camera.cpp(346,70): warning C4305: 'argumento': truncamiento de 'double' a 'float'
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\camera.cpp(351,69): warning C4305: 'argumento': truncamiento de 'double' a 'float'
-  ImCurveEdit.cpp
   ImGradient.cpp
   imgui.cpp
   ImGuizmo.cpp
@@ -33,18 +33,17 @@ C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framewo
   fbo.cpp
   framework.cpp
   application.cpp
-  gltf_loader.cpp
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\framework.cpp(49,4): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\framework.cpp(151,4): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\framework.cpp(184,18): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\framework.cpp(1300,34): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\framework.cpp(1418,32): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\framework.cpp(1423,32): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
+  gltf_loader.cpp
   input.cpp
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\fbo.cpp(112,24): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\fbo.cpp(113,25): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\fbo.cpp(143,24): warning C4018: '<': no coinciden signed/unsigned
-  main.cpp
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\scene.h(13,12): warning C4099: 'cJSON': nombre de tipo visto anteriormente usando 'struct' ahora se ve usando 'class' (compilando archivo de origen ..\..\src\application.cpp)
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\extra\cJSON.h(103): message : vea la declaración de 'cJSON' (compilando archivo de origen ..\..\src\application.cpp)
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\application.cpp(130,14): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
@@ -54,16 +53,19 @@ C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framewo
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\application.cpp(286,20): warning C4018: '<': no coinciden signed/unsigned
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\application.cpp(391,36): warning C4244: '*=': conversión de 'double' a 'float'; posible pérdida de datos
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\application.cpp(393,35): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
+  main.cpp
+  material.cpp
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\extra\cgltf.h(771,15): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details. (compilando archivo de origen ..\..\src\gltf_loader.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\extra\cgltf.h(1005,3): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details. (compilando archivo de origen ..\..\src\gltf_loader.cpp)
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\extra\cgltf.h(1006,3): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details. (compilando archivo de origen ..\..\src\gltf_loader.cpp)
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\extra\cgltf.h(1010,3): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details. (compilando archivo de origen ..\..\src\gltf_loader.cpp)
-C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\extra\cgltf.h(1005,3): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details. (compilando archivo de origen ..\..\src\gltf_loader.cpp)
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\extra\cgltf.h(1415,3): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details. (compilando archivo de origen ..\..\src\gltf_loader.cpp)
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\extra\cgltf.h(1420,3): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details. (compilando archivo de origen ..\..\src\gltf_loader.cpp)
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\extra\cgltf.h(1965,2): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details. (compilando archivo de origen ..\..\src\gltf_loader.cpp)
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\extra\cgltf.h(1975,2): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details. (compilando archivo de origen ..\..\src\gltf_loader.cpp)
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\extra\cgltf.h(2054,2): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details. (compilando archivo de origen ..\..\src\gltf_loader.cpp)
-  material.cpp
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\input.cpp(138,24): warning C4244: '=': conversión de 'float' a 'char'; posible pérdida de datos
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\input.cpp(146,19): warning C4305: 'inicializando': truncamiento de 'double' a 'float'
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\extra\cJSON.h(104,1): warning C4099: 'cJSON': nombre de tipo visto anteriormente usando 'class' ahora se ve usando 'struct' (compilando archivo de origen ..\..\src\gltf_loader.cpp)
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\extra\cJSON.h(103): message : vea la declaración de 'cJSON' (compilando archivo de origen ..\..\src\gltf_loader.cpp)
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\gltf_loader.cpp(61,20): warning C4018: '<': no coinciden signed/unsigned
@@ -74,19 +76,18 @@ C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framewo
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\gltf_loader.cpp(183,21): warning C4018: '<': no coinciden signed/unsigned
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\gltf_loader.cpp(397,22): warning C4018: '<': no coinciden signed/unsigned
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\gltf_loader.cpp(426,20): warning C4018: '<': no coinciden signed/unsigned
-C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\gltf_loader.cpp(471,2): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\gltf_loader.cpp(491,22): warning C4018: '<': no coinciden signed/unsigned
-C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\input.cpp(138,24): warning C4244: '=': conversión de 'float' a 'char'; posible pérdida de datos
-C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\input.cpp(146,19): warning C4305: 'inicializando': truncamiento de 'double' a 'float'
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\gltf_loader.cpp(471,2): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   mesh.cpp
   renderCall.cpp
+  renderer.cpp
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\main.cpp(153,46): warning C4244: '=': conversión de 'Sint32' a 'float'; posible pérdida de datos
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\main.cpp(188,23): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
-  renderer.cpp
   prefab.cpp
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\material.cpp(71,9): warning C4244: 'inicializando': conversión de 'float' a 'int'; posible pérdida de datos
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\material.cpp(73,75): warning C4244: 'argumento': conversión de 'int' a 'float'; posible pérdida de datos
   scene.cpp
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\mesh.cpp(295,3): warning C4018: '<': no coinciden signed/unsigned
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\mesh.cpp(496,1): warning C4005: 'glGenBuffersARB': redefinición de macro
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\visualstudio\libs\include\GL\glew.h(7631): message : vea la definición anterior de 'glGenBuffersARB' (compilando archivo de origen ..\..\src\mesh.cpp)
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\mesh.cpp(497,1): warning C4005: 'glBindBufferARB': redefinición de macro
@@ -121,7 +122,13 @@ C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framewo
   shader.cpp
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\extra\cJSON.h(104,1): warning C4099: 'cJSON': nombre de tipo visto anteriormente usando 'class' ahora se ve usando 'struct' (compilando archivo de origen ..\..\src\renderer.cpp)
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\extra\cJSON.h(103): message : vea la declaración de 'cJSON' (compilando archivo de origen ..\..\src\renderer.cpp)
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.cpp(106,10): error C2039: "sort": no es un miembro de "std"
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29910\include\sstream(20): message : vea la declaración de 'std'
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.cpp(106,14): error C3861: 'sort': no se encontró el identificador
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.cpp(111,23): warning C4018: '<': no coinciden signed/unsigned
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.cpp(115,14): error C2039: "sort": no es un miembro de "std"
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29910\include\sstream(20): message : vea la declaración de 'std'
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.cpp(115,18): error C3861: 'sort': no se encontró el identificador
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.cpp(129,23): warning C4018: '<': no coinciden signed/unsigned
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.cpp(139,23): warning C4018: '<': no coinciden signed/unsigned
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.cpp(148,20): warning C4018: '<': no coinciden signed/unsigned
@@ -130,6 +137,7 @@ C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framewo
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.cpp(246,30): warning C4244: 'argumento': conversión de 'double' a 'GLsizei'; posible pérdida de datos
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.cpp(246,23): warning C4244: 'argumento': conversión de 'double' a 'GLsizei'; posible pérdida de datos
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.cpp(315,20): warning C4018: '<': no coinciden signed/unsigned
+  texture.cpp
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\extra\cJSON.h(104,1): warning C4099: 'cJSON': nombre de tipo visto anteriormente usando 'class' ahora se ve usando 'struct' (compilando archivo de origen ..\..\src\prefab.cpp)
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\extra\cJSON.h(103): message : vea la declaración de 'cJSON' (compilando archivo de origen ..\..\src\prefab.cpp)
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\prefab.cpp(41,20): warning C4018: '<': no coinciden signed/unsigned
@@ -140,8 +148,6 @@ C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framewo
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\prefab.cpp(138,20): warning C4018: '<': no coinciden signed/unsigned
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\prefab.cpp(170,22): warning C4018: '<': no coinciden signed/unsigned
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\prefab.cpp(243,20): warning C4018: '<': no coinciden signed/unsigned
-  texture.cpp
-  utils.cpp
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\extra\cJSON.h(104,1): warning C4099: 'cJSON': nombre de tipo visto anteriormente usando 'class' ahora se ve usando 'struct' (compilando archivo de origen ..\..\src\scene.cpp)
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\extra\cJSON.h(103): message : vea la declaración de 'cJSON' (compilando archivo de origen ..\..\src\scene.cpp)
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\scene.cpp(18,20): warning C4018: '<': no coinciden signed/unsigned
@@ -151,8 +157,33 @@ C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framewo
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\scene.cpp(198,31): warning C4305: '=': truncamiento de 'double' a 'float'
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\scene.cpp(280,43): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\scene.cpp(304,34): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
+  utils.cpp
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\shader.cpp(178,20): warning C4018: '<': no coinciden signed/unsigned
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\shader.cpp(217,20): warning C4018: '<': no coinciden signed/unsigned
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\texture.cpp(33,51): warning C4244: 'argumento': conversión de 'unsigned int' a 'float'; posible pérdida de datos
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\texture.cpp(33,9): warning C4244: 'inicializando': conversión de 'double' a 'int'; posible pérdida de datos
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\texture.cpp(34,56): warning C4244: 'argumento': conversión de 'unsigned int' a 'float'; posible pérdida de datos
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\texture.cpp(34,9): warning C4244: 'inicializando': conversión de 'double' a 'int'; posible pérdida de datos
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\texture.cpp(39,15): warning C4018: '<': no coinciden signed/unsigned
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\texture.cpp(40,15): warning C4018: '<': no coinciden signed/unsigned
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\texture.cpp(47,55): warning C4244: 'argumento': conversión de 'unsigned int' a 'float'; posible pérdida de datos
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\texture.cpp(47,9): warning C4244: 'inicializando': conversión de 'double' a 'int'; posible pérdida de datos
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\texture.cpp(48,57): warning C4244: 'argumento': conversión de 'unsigned int' a 'float'; posible pérdida de datos
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\texture.cpp(48,9): warning C4244: 'inicializando': conversión de 'double' a 'int'; posible pérdida de datos
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\texture.cpp(53,15): warning C4018: '<': no coinciden signed/unsigned
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\texture.cpp(54,15): warning C4018: '<': no coinciden signed/unsigned
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\texture.cpp(331,94): warning C4244: 'argumento': conversión de 'float' a 'GLsizei'; posible pérdida de datos
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\texture.cpp(331,87): warning C4244: 'argumento': conversión de 'float' a 'GLsizei'; posible pérdida de datos
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\texture.cpp(631,18): warning C4244: '=': conversión de 'float' a 'unsigned int'; posible pérdida de datos
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\texture.cpp(632,19): warning C4244: '=': conversión de 'float' a 'unsigned int'; posible pérdida de datos
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\texture.cpp(655,19): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\texture.cpp(651,12): warning C4101: 'bytesPerPixel': variable local sin referencia
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\texture.cpp(787,6): warning C4101: 'actual_comps': variable local sin referencia
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\texture.cpp(853,15): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\texture.cpp(925,15): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\texture.cpp(939,15): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\texture.cpp(958,18): warning C4244: '=': conversión de 'float' a 'unsigned int'; posible pérdida de datos
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\texture.cpp(959,19): warning C4244: '=': conversión de 'float' a 'unsigned int'; posible pérdida de datos
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\utils.cpp(103,13): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\utils.cpp(128,7): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\utils.cpp(184,20): warning C4018: '<': no coinciden signed/unsigned
@@ -210,69 +241,3 @@ C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framewo
           [
               _Ty=float
           ]
-C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\texture.cpp(33,51): warning C4244: 'argumento': conversión de 'unsigned int' a 'float'; posible pérdida de datos
-C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\texture.cpp(33,9): warning C4244: 'inicializando': conversión de 'double' a 'int'; posible pérdida de datos
-C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\texture.cpp(34,56): warning C4244: 'argumento': conversión de 'unsigned int' a 'float'; posible pérdida de datos
-C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\texture.cpp(34,9): warning C4244: 'inicializando': conversión de 'double' a 'int'; posible pérdida de datos
-C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\texture.cpp(39,15): warning C4018: '<': no coinciden signed/unsigned
-C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\texture.cpp(40,15): warning C4018: '<': no coinciden signed/unsigned
-C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\texture.cpp(47,55): warning C4244: 'argumento': conversión de 'unsigned int' a 'float'; posible pérdida de datos
-C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\texture.cpp(47,9): warning C4244: 'inicializando': conversión de 'double' a 'int'; posible pérdida de datos
-C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\texture.cpp(48,57): warning C4244: 'argumento': conversión de 'unsigned int' a 'float'; posible pérdida de datos
-C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\texture.cpp(48,9): warning C4244: 'inicializando': conversión de 'double' a 'int'; posible pérdida de datos
-C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\texture.cpp(53,15): warning C4018: '<': no coinciden signed/unsigned
-C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\texture.cpp(54,15): warning C4018: '<': no coinciden signed/unsigned
-C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\texture.cpp(331,94): warning C4244: 'argumento': conversión de 'float' a 'GLsizei'; posible pérdida de datos
-C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\texture.cpp(331,87): warning C4244: 'argumento': conversión de 'float' a 'GLsizei'; posible pérdida de datos
-C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\texture.cpp(631,18): warning C4244: '=': conversión de 'float' a 'unsigned int'; posible pérdida de datos
-C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\texture.cpp(632,19): warning C4244: '=': conversión de 'float' a 'unsigned int'; posible pérdida de datos
-C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\texture.cpp(655,19): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\texture.cpp(651,12): warning C4101: 'bytesPerPixel': variable local sin referencia
-C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\texture.cpp(787,6): warning C4101: 'actual_comps': variable local sin referencia
-C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\texture.cpp(853,15): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\texture.cpp(925,15): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\texture.cpp(939,15): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\texture.cpp(958,18): warning C4244: '=': conversión de 'float' a 'unsigned int'; posible pérdida de datos
-C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\texture.cpp(959,19): warning C4244: '=': conversión de 'float' a 'unsigned int'; posible pérdida de datos
-  imgui_draw.cpp
-     Creando biblioteca ..\..\framework.lib y objeto ..\..\framework.exp
-LINK : warning LNK4098: la biblioteca predeterminada'LIBCMT' entra en conflicto con otras bibliotecas; use la biblioteca /NODEFAULTLIB:biblioteca
-  Generando código
-  Previous IPDB not found, fall back to full compilation.
-  All 4250 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
-  Generación de código finalizada
-LINK : warning LNK4286: "___glewDeleteBuffers" importa el símbolo "glew32s.lib(glew.obj)" definido en "imgui_impl_opengl3.obj"
-LINK : warning LNK4286: "___glewLinkProgram" importa el símbolo "glew32s.lib(glew.obj)" definido en "imgui_impl_opengl3.obj"
-LINK : warning LNK4286: "___glewDeleteShader" importa el símbolo "glew32s.lib(glew.obj)" definido en "imgui_impl_opengl3.obj"
-LINK : warning LNK4286: "___glewGenBuffers" importa el símbolo "glew32s.lib(glew.obj)" definido en "imgui_impl_opengl3.obj"
-LINK : warning LNK4286: "___glewGetProgramInfoLog" importa el símbolo "glew32s.lib(glew.obj)" definido en "imgui_impl_opengl3.obj"
-LINK : warning LNK4286: "___glewDetachShader" importa el símbolo "glew32s.lib(glew.obj)" definido en "imgui_impl_opengl3.obj"
-LINK : warning LNK4286: "___glewUniformMatrix4fv" importa el símbolo "glew32s.lib(glew.obj)" definido en "imgui_impl_opengl3.obj"
-LINK : warning LNK4286: "___glewBlendEquationSeparate" importa el símbolo "glew32s.lib(glew.obj)" definido en "imgui_impl_opengl3.obj"
-LINK : warning LNK4286: "___glewGenVertexArrays" importa el símbolo "glew32s.lib(glew.obj)" definido en "imgui_impl_opengl3.obj"
-LINK : warning LNK4286: "___glewBlendEquation" importa el símbolo "glew32s.lib(glew.obj)" definido en "imgui_impl_opengl3.obj"
-LINK : warning LNK4286: "___glewShaderSource" importa el símbolo "glew32s.lib(glew.obj)" definido en "imgui_impl_opengl3.obj"
-LINK : warning LNK4286: "___glewDeleteProgram" importa el símbolo "glew32s.lib(glew.obj)" definido en "imgui_impl_opengl3.obj"
-LINK : warning LNK4286: "___glewActiveTexture" importa el símbolo "glew32s.lib(glew.obj)" definido en "imgui_impl_opengl3.obj"
-LINK : warning LNK4286: "___glewAttachShader" importa el símbolo "glew32s.lib(glew.obj)" definido en "imgui_impl_opengl3.obj"
-LINK : warning LNK4286: "___glewBufferData" importa el símbolo "glew32s.lib(glew.obj)" definido en "imgui_impl_opengl3.obj"
-LINK : warning LNK4286: "___glewGetUniformLocation" importa el símbolo "glew32s.lib(glew.obj)" definido en "imgui_impl_opengl3.obj"
-LINK : warning LNK4286: "___glewBlendFuncSeparate" importa el símbolo "glew32s.lib(glew.obj)" definido en "imgui_impl_opengl3.obj"
-LINK : warning LNK4286: "___glewDeleteVertexArrays" importa el símbolo "glew32s.lib(glew.obj)" definido en "imgui_impl_opengl3.obj"
-LINK : warning LNK4286: "___glewGetProgramiv" importa el símbolo "glew32s.lib(glew.obj)" definido en "imgui_impl_opengl3.obj"
-LINK : warning LNK4286: "___glewGetShaderInfoLog" importa el símbolo "glew32s.lib(glew.obj)" definido en "imgui_impl_opengl3.obj"
-LINK : warning LNK4286: "___glewUniform1i" importa el símbolo "glew32s.lib(glew.obj)" definido en "imgui_impl_opengl3.obj"
-LINK : warning LNK4286: "___glewCreateProgram" importa el símbolo "glew32s.lib(glew.obj)" definido en "imgui_impl_opengl3.obj"
-LINK : warning LNK4286: "___glewBindBuffer" importa el símbolo "glew32s.lib(glew.obj)" definido en "imgui_impl_opengl3.obj"
-LINK : warning LNK4286: "___glewCreateShader" importa el símbolo "glew32s.lib(glew.obj)" definido en "imgui_impl_opengl3.obj"
-LINK : warning LNK4286: "___glewGetAttribLocation" importa el símbolo "glew32s.lib(glew.obj)" definido en "imgui_impl_opengl3.obj"
-LINK : warning LNK4286: "___glewCompileShader" importa el símbolo "glew32s.lib(glew.obj)" definido en "imgui_impl_opengl3.obj"
-LINK : warning LNK4286: "___glewGetShaderiv" importa el símbolo "glew32s.lib(glew.obj)" definido en "imgui_impl_opengl3.obj"
-LINK : warning LNK4286: "___glewDrawElementsBaseVertex" importa el símbolo "glew32s.lib(glew.obj)" definido en "imgui_impl_opengl3.obj"
-LINK : warning LNK4286: "___glewVertexAttribPointer" importa el símbolo "glew32s.lib(glew.obj)" definido en "imgui_impl_opengl3.obj"
-LINK : warning LNK4286: "___glewUseProgram" importa el símbolo "glew32s.lib(glew.obj)" definido en "imgui_impl_opengl3.obj"
-LINK : warning LNK4286: "___glewBindSampler" importa el símbolo "glew32s.lib(glew.obj)" definido en "imgui_impl_opengl3.obj"
-LINK : warning LNK4286: "___glewBindVertexArray" importa el símbolo "glew32s.lib(glew.obj)" definido en "imgui_impl_opengl3.obj"
-LINK : warning LNK4286: "___glewEnableVertexAttribArray" importa el símbolo "glew32s.lib(glew.obj)" definido en "imgui_impl_opengl3.obj"
-glew32s.lib(glew.obj) : warning LNK4099: no se encontró PDB 'vc120.pdb' con 'glew32s.lib(glew.obj)' o en 'C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\vc120.pdb'; se vinculará el objeto sin tener en cuenta información de depuración
-  visualstudio.vcxproj -> C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\framework.exe
