@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿  camera.cpp
   cJSON.cpp
   box.cpp
@@ -122,6 +123,11 @@ C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framewo
   shader.cpp
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\extra\cJSON.h(104,1): warning C4099: 'cJSON': nombre de tipo visto anteriormente usando 'class' ahora se ve usando 'struct' (compilando archivo de origen ..\..\src\renderer.cpp)
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\extra\cJSON.h(103): message : vea la declaración de 'cJSON' (compilando archivo de origen ..\..\src\renderer.cpp)
+=======
+﻿  renderer.cpp
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\extra\cJSON.h(104,1): warning C4099: 'cJSON': nombre de tipo visto anteriormente usando 'class' ahora se ve usando 'struct'
+C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\extra\cJSON.h(103): message : vea la declaración de 'cJSON'
+>>>>>>> b826754c029ce1599b1439a53df6a3827f182c03
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.cpp(106,10): error C2039: "sort": no es un miembro de "std"
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29910\include\sstream(20): message : vea la declaración de 'std'
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.cpp(106,14): error C3861: 'sort': no se encontró el identificador
@@ -137,6 +143,7 @@ C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framewo
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.cpp(246,30): warning C4244: 'argumento': conversión de 'double' a 'GLsizei'; posible pérdida de datos
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.cpp(246,23): warning C4244: 'argumento': conversión de 'double' a 'GLsizei'; posible pérdida de datos
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\renderer.cpp(315,20): warning C4018: '<': no coinciden signed/unsigned
+<<<<<<< HEAD
   texture.cpp
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\extra\cJSON.h(104,1): warning C4099: 'cJSON': nombre de tipo visto anteriormente usando 'class' ahora se ve usando 'struct' (compilando archivo de origen ..\..\src\prefab.cpp)
 C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framework\src\extra\cJSON.h(103): message : vea la declaración de 'cJSON' (compilando archivo de origen ..\..\src\prefab.cpp)
@@ -241,3 +248,5 @@ C:\Users\pansu\OneDrive\Documentos\3ºtrimestre_3\Real\GTR_FrameAlex\GTR_Framewo
           [
               _Ty=float
           ]
+=======
+>>>>>>> b826754c029ce1599b1439a53df6a3827f182c03
