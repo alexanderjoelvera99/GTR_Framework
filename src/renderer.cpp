@@ -6,25 +6,21 @@
 #include "texture.h"
 #include "prefab.h"
 #include "material.h"
-#include "utils.h"
+#include "utils.h" 
 #include "scene.h"
 #include "extra/hdre.h"
 #include "application.h"
-<<<<<<< HEAD
-#include <algorithm>  
-=======
 #include <algorithm>
 
->>>>>>> b826754c029ce1599b1439a53df6a3827f182c03
 
 using namespace GTR;
 Renderer::Renderer(GTR::eMultipleLightRendering multiple_light_rendering, std::string shader_name){
 	this->multiple_light_rendering = multiple_light_rendering;
 	this->shader_name = shader_name;
     this->selected_light = 0;
-    this->pipeline_mode = ePipelineMode::FORWARD;
-    this->render_mode = eRenderMode::MULTI; // cambiar...
-    this->show_gbuffers = false;
+    this->pipeline_mode = ePipelineMode::DEFERRED;
+    this->render_mode = eRenderMode::GBUFFERS; // cambiar...
+    this->show_gbuffers = true;
 }
 
 struct sortRC {
@@ -58,13 +54,13 @@ void Renderer::renderScene(GTR::Scene* scene, Camera* camera)
     // Render to depth buffer of every light to create Shadow Maps
     std::vector<GTR::LightEntity*> lights = scene->light_entities;
     
-    for (int i = 0; i < lights.size(); i++){
-        // Collecting render calls for every light
-        collectRenderCall(scene, lights[i]->camera_light, lights[i]->rc);
-        
-        // Rendering the depth buffer to texture
-        renderLightDepthBuffer(lights[i], lights[i]->rc);
-    }
+//    for (int i = 0; i < lights.size(); i++){
+//        // Collecting render calls for every light
+//        collectRenderCall(scene, lights[i]->camera_light, lights[i]->rc);
+//
+//        // Rendering the depth buffer to texture
+//        renderLightDepthBuffer(lights[i], lights[i]->rc);
+//    }
         
     // View the depth buffer of a light
     //viewDepthBuffer(lights[this->selected_light]);
@@ -197,23 +193,23 @@ void GTR::Renderer::renderDeferred(GTR::Scene* scene, std::vector <RenderCall>& 
     glDisable(GL_BLEND);
 
 
-    Mesh* quad = Mesh::getQuad(); ///////////////////////////////////
-    Shader* shader = Shader::Get("deferred");
-    shader->enable();
-    shader->setTexture("u_color_texture", gbuffers_fbo.color_textures[0], 0);
-    shader->setTexture("u_normal_texture", gbuffers_fbo.color_textures[1], 1);
-    shader->setTexture("u_extra_texture", gbuffers_fbo.color_textures[2], 2);
-    shader->setTexture("u_depth_texture", gbuffers_fbo.depth_texture, 3);
-    shader->setUniform("u_ambient_light", scene->ambient_light);
-    //shader->setUniform("u_emissive_factor", );
-    // emisive texture
-    // oclustion texture
-    // no se puede leer de model.. solo infor de las texturas...
-
-    Matrix44 model = camera->viewprojection_matrix;
-    model.inverse();
-
-    shader->setUniform("u_inverse_viewprojection", model);
+//    Mesh* quad = Mesh::getQuad(); ///////////////////////////////////
+//    Shader* shader = Shader::Get("deferred");
+//    shader->enable();
+//    shader->setTexture("u_color_texture", gbuffers_fbo.color_textures[0], 0);
+//    shader->setTexture("u_normal_texture", gbuffers_fbo.color_textures[1], 1);
+//    shader->setTexture("u_extra_texture", gbuffers_fbo.color_textures[2], 2);
+//    shader->setTexture("u_depth_texture", gbuffers_fbo.depth_texture, 3);
+//    shader->setUniform("u_ambient_light", scene->ambient_light);
+//    //shader->setUniform("u_emissive_factor", );
+//    // emisive texture
+//    // oclustion texture
+//    // no se puede leer de model.. solo infor de las texturas...
+//
+//    Matrix44 model = camera->viewprojection_matrix;
+//    model.inverse();
+//
+//    shader->setUniform("u_inverse_viewprojection", model);
 
     //u_iRes
 
